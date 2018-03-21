@@ -1,0 +1,394 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+ <div class="container" align="center" >
+ 
+    <!-- ini  -->
+    <p:panel id="ident" header="Ocorrência" style="width: 700px;">         
+       <div class="row panel-body">  
+          
+                   
+        <div class="form-group col-md-4">
+                <p:outputLabel value="Número do campo: " />  <h:outputText value=" #{measurementMB.organism.occurrence.event.eventId}" />
+        </div>
+        
+        <div class="form-group col-md-5">
+                <p:outputLabel value="Nome científico: " />  <h:outputText value=" #{measurementMB.organism.occurrence.taxon.scientificName}" />
+        </div>
+        
+        <div class="form-group col-md-3">
+                <h:outputLabel value="Quantidade: " />  <h:outputText value=" #{measurementMB.organism.occurrence.individualCount}" />
+        </div>           
+        
+      </div>
+    </p:panel>             
+    <!-- fim -->
+	
+	
+<p:panel id="basic" style="width: 700px; align:center" header="Medidas">
+
+	  
+   
+  
+  <!-- teste -->
+ 
+ <h:form id="frmCad"> 
+  
+  <h:panelGrid columns="4" id="pnlInsert">
+			
+			  <p:panelGrid columns="4" style="width:600px;">
+			   
+                <p:outputLabel value="Tipo: " />
+                   <p:selectOneMenu value="#{measurementMB.measurement.measurementType}" effect="fold" editable="false">
+		                <f:selectItem itemLabel="Comp. Total" itemValue="Comp. Total" />
+		                <f:selectItem itemLabel="Peso Umido" itemValue="Peso Umido" />
+		                <f:selectItem itemLabel="Peso seco" itemValue="Peso seco" />
+		           </p:selectOneMenu> 							
+						
+               <p:outputLabel value="Valor: " />
+               <p:inputText value="#{measurementMB.measurement.measurementValue}" /> 
+                
+               <p:outputLabel value="Unidade " />
+                   <p:selectOneMenu value="#{measurementMB.measurement.measurementUnit}" effect="fold" editable="false">
+		                <f:selectItem itemLabel="Mg" itemValue="Mg" />
+		                <f:selectItem itemLabel="g" itemValue="g" />
+		                <f:selectItem itemLabel="cm" itemValue="cm" />
+		                <f:selectItem itemLabel="mm" itemValue="mm" />
+		           </p:selectOneMenu>  
+		           
+		       <p:outputLabel value="Data: " />
+               <p:calendar  id="date" value="#{measurementMB.measurement.measurementDeterminedDate}" locale="pt" pattern="dd/MM/yyyy" mask="true" />  
+                   
+		        <p:outputLabel value="Medidor: " />                    
+        		  
+        		  <p:selectOneMenu id="cboFuncao" value="#{measurementMB.measurement.measurer.id}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{measurementMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />
+									
+				  </p:selectOneMenu>  
+				  
+				  <p:outputLabel value="Método: " />   
+		           
+		           <p:selectOneMenu id="cboMea" value="#{measurementMB.measurement.measurementMethod.id}"
+								filter="true" filterMatchMode="contains">
+								
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{measurementMB.measurementMethodList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.measurementMethod}" />
+									
+				  </p:selectOneMenu>  
+		           
+		       <p:outputLabel value="Comentário: " />
+               <p:inputText value="#{measurementMB.measurement.measurementRemarks}" /> 
+		           
+		        <p:commandButton value="Inserir" icon="fa fa-check"
+								actionListener="#{measurementMB.save()}"
+								update=":formMeasurement:tbl"
+								oncomplete="PF('dlgConfirmacao').show();">
+								
+								<p:resetInput target="pnlInsert"></p:resetInput>
+							</p:commandButton>    
+  </p:panelGrid>
+</h:panelGrid>    
+
+</h:form>          
+  
+  <!-- fim -->
+  
+  <h:form id="formMeasurement" >
+     
+    <p:dataTable id="tbl" var="measurement" value="#{measurementMB.measurementList}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" rows="10" style="margin-bottom:20px; padding-top:20px; max-width: 600px; min-width: 600px;" 
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]"
+                 > 
+    
+       <p:column headerText="Tipo" filterBy="#{measurement.measurementType}" filterMatchMode="contains" width="120" >       
+       		               
+            <h:outputText value="#{measurement.measurementType}" />
+                     
+        </p:column>
+        
+        <p:column headerText="Valor" filterBy="#{measurement.measurementValue}" width="120">
+            <h:outputText value="#{measurement.measurementValue}" />
+        </p:column>
+        
+        <p:column headerText="Unidade" filterBy="#{measurement.measurementUnit}" width="120">
+            <h:outputText value="#{measurement.measurementUnit}" />
+        </p:column>
+        
+         <p:column headerText="Data" filterBy="#{measurement.measurementDeterminedDate}"  filterMatchMode="contains" width="120">
+            <h:outputText value="#{measurement.measurementDeterminedDate}">
+               <f:convertDateTime pattern="dd/MM/yyyy" /> 
+            </h:outputText>  
+            
+        </p:column>
+                
+              
+      <p:column headerText="Opções" width="150">
+      		<div align="center">
+      	
+      					 <p:commandButton id="vis"  icon="fa fa-eye" 
+								oncomplete="PF('dlgVisualizar').show();"
+								update=":frmVisualizar:pnlVisualizar">
+								<f:setPropertyActionListener value="#{measurement}"
+									target="#{measurementMB.measurement()}" />
+									
+								<p:tooltip  for="vis" value="Visualizar evento" trackMouse="true" />	
+						</p:commandButton>	
+      											
+							<p:commandButton id="edit" icon="fa fa-edit" 
+								oncomplete="PF('dlgEditar').show();"
+								update=":frmEditar:pnlEditar">
+								
+								<f:setPropertyActionListener value="#{measurement}"
+									target="#{measurementMB.measurement()}" />
+									
+								<p:tooltip for="edit" value="Editar" trackMouse="true" />
+									
+							</p:commandButton>
+							
+							
+							<p:commandButton id="exc" icon="fa fa-eraser" 
+								oncomplete="PF('dlgDel').show();"
+								update=":frmDel:pnlDel">
+								
+								<f:setPropertyActionListener value="#{measurement}"
+									target="#{measurementMB.measurement}" />
+								
+								<p:tooltip for="exc" value="Excluir" trackMouse="true" />
+									
+							</p:commandButton>
+							
+							
+						</div>
+		</p:column>
+	    
+	          
+                     
+     </p:dataTable>
+          
+     
+      </h:form>  
+     
+    
+     
+  </p:panel>  
+  
+  <!--DIALOGO visualizar -->
+
+		<p:dialog widgetVar="dlgVisualizar" closable="false"
+			draggable="true" resizable="false" header="Visualizar"
+			modal="true" appendTo="@(body)">
+			<h:form id="frmVisualizar">
+			
+				<h:panelGrid columns="2" id="pnlVisualizar">
+					<p:panelGrid columns="2">
+												
+						<h:panelGrid columns="2">
+						
+				   <p:outputLabel value="Tipo: " />
+				   <h:outputText value="#{measurementMB.measurement.measurementType}"/>   						
+						
+               <p:outputLabel value="Valor: " />
+               <h:outputText value="#{measurementMB.measurement.measurementValue}" /> 
+                
+               <p:outputLabel value="Unidade " />
+               <h:outputText value="#{measurementMB.measurement.measurementUnit}" /> 
+                   
+		       <p:outputLabel value="Data: " />
+		       <h:outputText value="#{measurementMB.measurement.measurementDeterminedDate}" /> 
+                   
+		       <p:outputLabel value="Medidor: " />                    
+		       <h:outputText value="#{measurementMB.measurement.measurer.personGivenName} #{measurementMB.measurement.measurer.personSurName}" />
+        		  
+			   <p:outputLabel value="Método: " />   
+			   <h:outputText value="#{measurementMB.measurement.measurementMethod.measurementMethod}" />
+		            
+		       <p:outputLabel value="Comentário: " />
+               <h:outputText value="#{measurementMB.measurement.measurementRemarks}" /> 
+		           	
+								
+														
+							<p:commandButton value="Voltar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgVisualizar').hide();"
+								
+								>								
+							</p:commandButton>
+							
+
+						</h:panelGrid>
+						<p:outputLabel />
+					</p:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM visualizar -->
+		
+   
+   
+    <!--DIALOGO EDITAR -->
+
+		<p:dialog widgetVar="dlgEditar" closable="false"
+			draggable="true" resizable="false" header="Editar"
+			modal="true" appendTo="@(body)">
+	
+		<h:form id="frmEditar">	
+			<h:panelGrid columns="4" id="pnlEditar">
+			
+			  <p:panelGrid columns="4" style="width:600px;">
+				
+				  <p:outputLabel value="Tipo: " />
+                   <p:selectOneMenu value="#{measurementMB.measurement.measurementType}" effect="fold" editable="false">
+		                <f:selectItem itemLabel="Comp. Total" itemValue="Comp. Total" />
+		                <f:selectItem itemLabel="Peso Umido" itemValue="Peso Umido" />
+		                <f:selectItem itemLabel="Peso seco" itemValue="Peso seco" />
+		           </p:selectOneMenu> 							
+						
+               <p:outputLabel value="Valor: " />
+               <p:inputText value="#{measurementMB.measurement.measurementValue}" /> 
+                
+               <p:outputLabel value="Unidade " />
+                   <p:selectOneMenu value="#{measurementMB.measurement.measurementUnit}" effect="fold" editable="false">
+		                <f:selectItem itemLabel="Mg" itemValue="Mg" />
+		                <f:selectItem itemLabel="g" itemValue="g" />
+		                <f:selectItem itemLabel="cm" itemValue="cm" />
+		                <f:selectItem itemLabel="mm" itemValue="mm" />
+		           </p:selectOneMenu>  
+		           
+		       <p:outputLabel value="Data: " />
+               <p:calendar  id="date" value="#{measurementMB.measurement.measurementDeterminedDate}" locale="pt" pattern="dd/MM/yyyy" mask="true" />  
+                   
+		        <p:outputLabel value="Medidor: " />                    
+        		  
+        		  <p:selectOneMenu id="cboFuncao" value="#{measurementMB.measurement.measurer.id}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{measurementMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />
+									
+				  </p:selectOneMenu>  
+				  
+				  <p:outputLabel value="Método: " />   
+		           
+		           <p:selectOneMenu id="cboMea" value="#{measurementMB.measurement.measurementMethod.id}"
+								filter="true" filterMatchMode="contains">
+								
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{measurementMB.measurementMethodList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.measurementMethod}" />
+									
+				  </p:selectOneMenu>  
+		           
+		       <p:outputLabel value="Comentário: " />
+               <p:inputText value="#{measurementMB.measurement.measurementRemarks}" /> 
+		           						
+						
+              				
+	  </p:panelGrid>
+	 </h:panelGrid>              
+	 
+ 			<h:panelGrid columns="2">
+							<p:commandButton value="Confirmar edição" icon="fa fa-check"
+								actionListener="#{measurementMB.edit()}"
+								update=":formMeasurement:tbl"
+								oncomplete="PF('dlgConfirmacao').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgEditar').hide();">
+								<p:resetInput target="pnlEditar"></p:resetInput>
+							</p:commandButton>
+
+			</h:panelGrid>
+</h:form>			
+			
+		
+		</p:dialog>	
+   
+   
+   <p:dialog header="Confirmar" widgetVar="dlgConfirmacao" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+						update=":formMeasurement:tbl"
+						oncomplete="PF('dlgConfirmacao').hide();"
+						onclick="PF('dlgEditar').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmDel">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Deseja realmente remover esta medida?</p>
+				<h:panelGrid columns="2" id="pnlDel">
+							
+							
+							<p:commandButton value="Confirmar remoção" icon="fa fa-check"
+								actionListener="#{measurementMB.delete()}"
+								update=":formMeasurement:tbl"
+								oncomplete="PF('dlgDel').hide(); PF('dlgConfirmacaoDel').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgDel').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+    
+    
+    
+		<p:dialog header="Confirmar Remoção" widgetVar="dlgConfirmacaoDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false"/>
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check" ajax="false"
+						update=":formMeasurement:tbl"
+						onclick="PF('dlgConfirmacaoDel').hide();"
+						actionListener="#{measurementMB.openDel()}"
+						 >
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+   
+   
+   
+ </div>
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+

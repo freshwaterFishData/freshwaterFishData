@@ -1,0 +1,307 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+	
+     <div class="container">
+     
+     <!-- ini  -->
+    <p:panel id="ident" style="width: 1100px;"  header="Evento de Coleta do projeto #{insertOccurrenceMB.event.subproject.subprojectTitle}" >         
+       <div class="row panel-body">   
+          
+                   
+        <div class="form-group col-md-4">
+                <p:outputLabel value="Data: " />  
+                <h:outputText value="#{insertOccurrenceMB.event.eventDate}">
+                	<f:convertDateTime pattern="dd/MM/yyyy" /> 
+                </h:outputText>
+                
+        </div>
+        
+        <div class="form-group col-md-4">
+                <p:outputLabel value="Hora: " />  <h:outputText value="#{insertOccurrenceMB.event.eventTime}" />
+        </div>
+        
+        <div class="form-group col-md-4">
+                <h:outputLabel value="Corpo d'água: " />  <h:outputText value="#{insertOccurrenceMB.event.waterBody.waterBody}" />
+        </div>                              
+                           
+        
+      </div>
+    </p:panel>             
+    <!-- fim -->
+     
+     
+		<h:form id="ocurrence" class="form-inline">
+		
+		<p:panel id="basic" header="Ocorrência" style="width: 1100px; align:center">
+		
+		<p:messages id="messages" 	 autoUpdate="true" closable="true" />
+		
+           
+        <div class="row panel-body">  
+                      
+            <div  class="form-group col-md-2">
+               <p:outputLabel for="br" value="Base do registro: " /> 
+                
+                 <p:selectOneMenu id="br" value="#{insertOccurrenceMB.occurrence.basisOfRecorded}" effect="fold" editable="false" required="true" requiredMessage="O campo Base do registro é obrigatório.">
+            			<f:selectItem itemLabel="PreservedSpecimen" itemValue="PreservedSpecimen" />
+            			<f:selectItem itemLabel="LivingSpeciment" itemValue="LivingSpeciment" />
+            			<f:selectItem itemLabel="HumanObservation" itemValue="HumanObservation" />
+            			<f:selectItem itemLabel="MachineObservation" itemValue="MachineObservation" />
+            			<f:selectItem itemLabel="Sample" itemValue="Sample" />
+        		 </p:selectOneMenu>      
+                
+            </div>
+                       
+           <div  class="form-group col-md-2">
+               <div> <p:outputLabel for="cboFuncao" value="Coletor: " />    </div>
+                    
+        		  
+        		  <p:selectOneMenu id="cboFuncao" value="#{insertOccurrenceMB.occurrence.recorder.id}"
+								filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Coletor é obrigatório.">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{insertOccurrenceMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />
+									
+				  </p:selectOneMenu>
+                
+            </div>
+            
+            <div  class="form-group col-md-3">
+                <div><p:outputLabel for="taxon" value="Nome científico: " /></div>    
+                <p:selectOneMenu id="taxon"  value="#{insertOccurrenceMB.occurrence.taxon.id}" effect="fold" editable="false" 
+                filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Nome científico é obrigatório.">
+            			<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+            			
+            			<f:selectItems value="#{insertOccurrenceMB.taxonList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.scientificName}" />
+        		</p:selectOneMenu>
+        		
+        		<p:commandButton id="txs"  icon="fa fa-plus" 
+								oncomplete="PF('dlgTaxon').show();"  style="vertical-align: 7px; margin-left: 10px;" />
+            </div>           
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel for="ndi" value="Número de indivíduos: " /></div>
+                <p:inputText id="ndi" value="#{insertOccurrenceMB.occurrence.individualCount}" required="true" requiredMessage="O campo Número de indivíduos é obrigatório." />   
+            </div> 
+            
+          </div>  
+               
+         <div class="row panel-body"> 
+         
+         <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Peso dos organismos: " /></div>
+                <p:inputText  value="#{insertOccurrenceMB.occurrence.organismQuantity}" />   
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertOccurrenceMB.occurrence.organismQuantityTypeId.id}" effect="fold" editable="false">
+                            			            			
+            			<f:selectItems value="#{insertOccurrenceMB.organismQuantityList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.organismQuantityType}" />
+        		</p:selectOneMenu>  
+        	  
+            </div>
+           
+                                   
+        </div>   
+              
+     
+          
+     <p:panel id="ident" header="Identificação" >         
+       <div class="row panel-body">   
+          
+         <div  class="form-group col-md-2">
+                <div> <p:outputLabel for="iden" value="Identificador: " /> </div>  
+                
+                <p:selectOneMenu id="iden" value="#{insertOccurrenceMB.occurrence.identifier.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Identificador é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{insertOccurrenceMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />
+        		</p:selectOneMenu>                   
+         </div>
+         
+        <div class="form-group col-md-2">
+                <p:outputLabel for="date" value="Data: " />
+                <p:calendar  id="date" value="#{insertOccurrenceMB.occurrence.identifiedDate}" locale="pt" pattern="dd/MM/yyyy" mask="true" required="true" requiredMessage="O campo Data é obrigatório." />  
+        </div>
+                                      
+            
+            <div  class="form-group col-md-4">
+                <p:outputLabel  value="Anotações: " />     
+                <p:inputTextarea rows="4" cols="60" value="#{insertOccurrenceMB.occurrence.identificationRemarks}" />    
+            </div>	
+                
+        
+      </div>
+    </p:panel>             
+    
+            
+            
+         <div class="row panel-body">   
+                <div class="form-group col-md-1">  
+                
+                    <p:commandButton value="Gravar" 
+	                actionListener="#{insertOccurrenceMB.save()}" 
+	                oncomplete="PF('dlgConfirmar').show();"
+	                update=":frmConfirmar:pnlConfirmar"
+	                
+                	>
+                	  
+                	<f:param id="eventId" name="eventId" value="#{insertOccurrenceMB.event.id}"/>
+                </p:commandButton>     
+                </div>
+                
+                 <div class="form-group col-md-1">     
+            
+                    <p:commandButton value="Voltar" action="#{occurrenceMB.back()}" ajax="false" >                
+                         <f:param  name="id" value="#{insertOccurrenceMB.event.id}"/>
+		     		</p:commandButton> 
+		     	  </div>
+         </div>   
+         
+            
+            
+         </p:panel>
+		     
+		    						
+		</h:form>
+		
+		<p:dialog header="Confirmar" widgetVar="dlgConfirmar" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmConfirmar">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				
+				<p>Deseja continuar inserindo dados de Ocorrência?</p>
+				<h:panelGrid columns="2" id="pnlConfirmar">							
+							
+							<p:commandButton value="Sim" icon="fa fa-check"
+								actionListener="#{insertOccurrenceMB.clean()}"
+								update="sample"
+								oncomplete="PF('dlgConfirmar').hide();" ajax="false"> 
+							</p:commandButton>
+							<p:commandButton value="Não" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgOrg').show(); PF('dlgConfirmar').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	     
+	<p:dialog header="Confirmar" widgetVar="dlgOrg" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmOrg">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Deseja inserir Dados dos Organismos dessa ocorrência?</p>
+				<h:panelGrid columns="2" id="pnlOrg">							
+							
+							<p:commandButton value="Sim" icon="fa fa-check"
+								actionListener="#{insertOccurrenceMB.openOrganism()}"
+								oncomplete="PF('dlgOrg').hide(); ">
+								
+								<f:param name="id" value="#{insertOccurrenceMB.occurrence.id}"/>
+							</p:commandButton>
+							<p:commandButton value="Não" icon="fa fa-reply"
+								action="#{occurrenceMB.back()}"
+								process="@this" oncomplete="PF('dlgOrg').hide();" ajax="false">
+								
+								<f:param id="id" name="id" value="#{insertOccurrenceMB.event.id}"/>
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>		
+		
+		<p:dialog widgetVar="dlgTaxon" closable="true"
+			draggable="true" resizable="true" header="Taxon"
+			modal="true" visible="false">
+			<h:form id="frmTaxon">
+			
+				<h:panelGrid columns="2" id="pnlTaxon">
+					<p:panelGrid columns="2">
+				
+				<p:outputLabel value="Nome científico " />
+               <p:inputText value="#{taxonMB.taxon.scientificName}" /> 
+               
+               <p:outputLabel value="Ordem " />
+               <p:inputText value="#{taxonMB.taxon.order}" />
+               
+               <p:outputLabel value="Família " />
+               <p:inputText value="#{taxonMB.taxon.family}" />
+               
+               <p:outputLabel value="Gênero " />
+               <p:inputText value="#{taxonMB.taxon.genus}" />
+               
+               <p:outputLabel value="Espécie " />
+               <p:inputText value="#{taxonMB.taxon.specificEpithet}" />
+
+											
+						<h:panelGrid columns="2">
+							<p:commandButton value="Inserir" icon="fa fa-check"
+								actionListener="#{taxonMB.save()}"
+								update=":ocurrence:taxon"
+								oncomplete="PF('dlgConfirmarTaxon').show(); PF('dlgTaxon').hide();">
+							</p:commandButton>						
+
+						</h:panelGrid>
+						
+						<p:outputLabel />
+					</p:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog> 
+		
+		<p:dialog header="Confirmar" widgetVar="dlgConfirmarTaxon" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmConfirmar2">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				
+				<h:panelGrid columns="2" id="pnlConfirmar2">							
+							
+							<p:commandButton value="Ok" icon="fa fa-reply"
+								actionListener="#{insertOccurrenceMB.populateTaxon()}"
+								process="@this" 
+								update=":ocurrence:taxon"
+								oncomplete="PF('dlgConfirmarTaxon').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>						
+		
+		
+		
+	  </div>	
+	  
+			
+	  
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+

@@ -1,0 +1,517 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+
+ 	
+ <div class="container" align="center" >	
+	   
+	
+	<p:panel id="basic" style="width: 1200px; align:center" header="Eventos de Coleta do projeto #{sampleMB.eventAux.subproject.subprojectTitle}">
+	
+		
+	<h:form id="formSample" > 
+	
+	<p:accordionPanel activeIndex="1">
+	
+	<p:tab title="Filtro" >
+	
+	<p:panelGrid columns="8" id="pnlF">
+	
+	<f:facet name="header">
+        <p:row>
+            <p:column colspan="4">Filtre os Eventos de Coleta pelo Período</p:column>
+        </p:row>
+ 
+    </f:facet> 
+        			
+			 <p:outputLabel value="Data Inicial: " />
+             <p:calendar id="date" value="#{sampleMB.initialDate}" navigator="true" locale="pt" pattern="dd/MM/yyyy" mask="true" />  
+              
+             <p:outputLabel value="Data Final: " />
+             <p:calendar id="date2" value="#{sampleMB.finalDate}" navigator="true" locale="pt" pattern="dd/MM/yyyy" mask="true" />  
+              
+              
+             <p:commandButton value="Filtrar" icon="fa fa-check"
+								actionListener="#{sampleMB.searchEvent()}"
+								update=":formSample:tbl">
+			</p:commandButton> 
+			
+			<p:commandButton id="limpar"  value="Retornar lista de dados de coleta inicial."
+ 	  							actionListener="#{sampleMB.getAll()}"
+								update=":formSample:tbl">
+								
+								<p:tooltip  for="limpar" value="Esse botão retorna a lista de dados de coleta inicial" trackMouse="true" />	
+			</p:commandButton>	
+                 
+                
+	</p:panelGrid>
+	
+	</p:tab>
+	
+	</p:accordionPanel>	
+	
+	<div align="left" style="padding: 10px 5px 0px 5px;">	
+            <p:commandButton action="#{insertSampleMB.open}"	value="Inserir evento de coleta" styleClass="ui-priority-primary" >
+ 	  	   		<f:param id="subprojectId" name="subprojectId" value="#{sampleMB.eventAux.subproject.id}"/>
+ 	  	 	</p:commandButton>
+ 	  	 	
+	</div>   
+	
+    <p:dataTable id="tbl" var="event" value="#{sampleMB.eventList}" selection="#{sampleMB.eventListSelect}" rowKey="#{event.id}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown} {Exporters}"
+                 paginator="true" rows="10" style="margin-bottom:20px;padding-top:20px; max-width: 1200px; min-width: 950px"  
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]" rowsPerPageTemplate="10,50,100"
+                 >
+                 
+          <f:facet name="{Exporters}">
+    		 <p:commandLink  actionListener="#{sampleMB.relatorio()}" process="tbl" update=":frmRel:tbl" style="float:right; padding-right: 10px;"
+    		  oncomplete="PF('dlgRel').show()" ajax="true">	 
+			 	<p:graphicImage title="Exportar os dados selecionados." alt="Salvar os dados selecionados." value="../../images/save.jpeg" width="24"/>
+		    </p:commandLink>
+		    
+            
+		 
+    	</f:facet>
+    
+    
+      <p:column selectionMode="multiple" style="width:30px;"/>	
+    
+      <p:column headerText="N° do Campo" filterBy="#{event.eventId}" filterMatchMode="contains" width="120" >            
+            <h:outputText value="#{event.eventId}" />
+        </p:column>	
+    	
+       <p:column headerText="Data" filterBy="#{event.eventDate}" filterMatchMode="contains" width="120">       
+       		               
+            <h:outputText value="#{event.eventDate}">
+               <f:convertDateTime pattern="dd/MM/yyyy" /> 
+            </h:outputText> 
+                
+       </p:column>
+        
+        <p:column headerText="Hora" filterBy="#{event.eventTime}" filterMatchMode="contains" width="120">
+            <h:outputText value="#{event.eventTime}">
+               <f:convertDateTime pattern="HH:mm"/> 
+            </h:outputText>
+        </p:column>
+        
+        <p:column headerText="Corpo d'água" filterBy="#{event.waterBody.waterBody}" filterMatchMode="contains" width="120" >            
+            <h:outputText value="#{event.waterBody.waterBody}" />
+        </p:column>
+        
+        <p:column headerText="Protocolo" filterBy="#{event.samplingProtocol.samplingProtocol}" filterMatchMode="contains" width="120" >
+            <h:outputText value="#{event.samplingProtocol.samplingProtocol}" />
+        </p:column>
+      
+      <p:column width="80"> 
+      
+      <f:facet name="header">
+                <h:outputText value="Ocorrências"/>
+      </f:facet>
+      
+      <a href="../ocurrence/listOccurrance.jsf?id=#{event.id}" class="fa fa-edit" style="padding-left: 25px;" title="Gerenciar Ocorrências de Espécies deste evento de coleta">
+      </a>    
+            
+      </p:column>
+      
+      <p:column width="50"> 
+      <f:facet name="header" >
+                <h:outputText value="Água"/>
+      </f:facet>
+	   
+	   <a href="../water/listWater.jsf?id=#{event.id}" class="fa fa-edit" style="padding-left: 10px;" title="Gerenciar dados da água referente a este evento de coleta"></a>
+	   
+      </p:column>
+     
+              
+      <p:column headerText="Opções" width="150">
+      		<div align="center">
+      		
+      					<p:commandButton id="vis"  icon="fa fa-eye" 
+      							actionListener="#{sampleMB.verificarPosicao(event)}"
+								oncomplete="PF('dlgVisualizar').show();"
+								update=":frmVisualizar:pnlVisualizar">
+								<f:setPropertyActionListener value="#{event}"
+									target="#{sampleMB.event()}" />
+								<p:tooltip  for="vis" value="Visualizar evento" trackMouse="true" />	
+						</p:commandButton>
+      					
+						
+							<p:commandButton id="edi" icon="fa fa-edit" 
+								oncomplete="PF('dlgEditar').show();"
+								update=":frmEditar:pnlEditar">
+								<f:setPropertyActionListener value="#{event}"
+									target="#{sampleMB.event()}" />
+									
+								<p:tooltip  for="edi" value="Editar evento" trackMouse="true" />	
+							</p:commandButton>
+							
+							
+							<p:commandButton id="ex" icon="fa fa-eraser" 
+								oncomplete="PF('dlgDel').show();"
+								update=":frmDel:pnlDel">
+								<f:setPropertyActionListener value="#{event}"
+									target="#{sampleMB.event()}" />
+							
+								<p:tooltip for="ex" value="Excluir evento" trackMouse="true" />	
+										
+							</p:commandButton>
+							
+							
+						</div>
+						
+						
+		</p:column>  
+                     
+     </p:dataTable>
+             
+     
+      </h:form>  
+     
+     
+   </p:panel>       
+   
+   <!--DIALOGO EDITAR DISCIPLINA -->
+
+		<p:dialog widgetVar="dlgEditar" closable="false"
+			draggable="true" resizable="false" header="Evento"
+			modal="true" appendTo="@(body)">
+			
+			<h:form id="frmEditar">
+			
+				<h:panelGrid columns="2" id="pnlEditar">
+					<p:panelGrid columns="2">
+					
+						<p:outputLabel value="Número do campo " />
+						<p:inputText maxlength="50" size="30"
+							value="#{sampleMB.event.eventId}"
+							requiredMessage="O campo é obrigatório.">
+							<f:validateBean />
+						</p:inputText>
+										
+					    <h:inputHidden value="#{sampleMB.event.subproject.id}" />
+						<h:inputHidden value="#{sampleMB.event.id}" />
+						
+						<p:outputLabel value="Data do evento: " />
+						<p:calendar id="date" value="#{sampleMB.event.eventDate}" navigator="true" locale="pt" pattern="dd/MM/yyyy" mask="true" />
+						
+						<p:outputLabel value="Hora inicial: " />						
+						 <p:calendar id="time" value="#{sampleMB.event.eventTime}" locale="pt" pattern="HH:mm" timeOnly="true"  />   
+						 
+						 <p:outputLabel value="Hora final: " />						
+						 <p:calendar id="time2" value="#{sampleMB.event.eventTimeFinal}" locale="pt" pattern="HH:mm" timeOnly="true"  />
+						
+						<p:outputLabel value="Protocolo:" />
+						<p:selectOneMenu  value="#{sampleMB.event.samplingProtocol.id}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{sampleMB.samplingProtocolList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.samplingProtocol}" />
+				 		</p:selectOneMenu>
+						
+						<p:outputLabel value="Esforço " />
+						<p:inputText maxlength="50" size="30"
+							value="#{sampleMB.event.sampleEffort}"
+							requiredMessage="O campo é obrigatório.">
+							<f:validateBean />
+						</p:inputText>
+						
+						<p:outputLabel value="Área varrida: " />
+						<p:inputText maxlength="50" size="30"
+							value="#{sampleMB.event.sampleSizeValue}"
+							required="true"
+							requiredMessage="O campo é obrigatório.">
+							<f:validateBean />
+						</p:inputText>
+												
+						<p:outputLabel value="Unidade de medida: " />                   
+		                <p:selectOneMenu  value="#{sampleMB.event.sizeUnit.id}"
+										filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="Selecione" itemValue="" />
+										<f:selectItems value="#{sampleMB.sizeUnitList}" var="item"
+											itemValue="#{item.id}" itemLabel="#{item.sizeUnit}" />
+						  </p:selectOneMenu>
+						  
+						<p:outputLabel value="Corpo d'água: " />    
+		                
+		               <p:selectOneMenu  value="#{sampleMB.event.waterBody.id}" filter="true" filterMatchMode="contains">
+										<f:selectItem itemLabel="Selecione" itemValue="" />
+										<f:selectItems value="#{sampleMB.waterBodyList}" var="item" itemValue="#{item.id}" itemLabel="#{item.waterBody}" />
+						</p:selectOneMenu>  
+						
+						
+        		    <p:outputLabel  value="Localidade: " />     
+                    <p:inputTextarea rows="4" cols="60" value="#{sampleMB.event.locality}" />   
+                    
+                    <p:outputLabel  value="Comentários da coleta: " />     
+                    <p:inputTextarea rows="4" cols="60" value="#{sampleMB.event.eventRemarks}" />   
+					
+						<h:panelGrid columns="2">
+							<p:commandButton value="Confirmar edição" icon="fa fa-check"
+								actionListener="#{sampleMB.edit()}"
+								update=":formSample:tbl"
+								oncomplete="PF('dlgConfirmacao').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgEditar').hide();">
+							</p:commandButton>
+
+						</h:panelGrid>
+						<p:outputLabel />
+					</p:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DIALOGO EDITAR DISCIPLINA -->
+		
+		  <!--DIALOGO visualizar -->
+
+		<p:dialog widgetVar="dlgVisualizar" closable="false"
+			draggable="true" resizable="false" header="Visualizar Evento"
+			modal="true" appendTo="@(body)" >
+			<h:form id="frmVisualizar">
+			
+				<h:panelGrid columns="2" id="pnlVisualizar">
+					<p:panelGrid columns="2">
+					
+						<p:outputLabel value="Número do campo:" />
+						<h:outputText value=" #{sampleMB.event.eventId}" />  
+																
+						<p:outputLabel value="Data do evento: " />						
+						<h:outputText value="#{sampleMB.event.eventDate}"> 
+                			<f:convertDateTime pattern="dd/MM/yyyy"/> 
+             			</h:outputText> 
+						
+						<p:outputLabel value="Hora Inicial: " />						
+						 <h:outputText  value=" #{sampleMB.event.eventTime} " locale="pt" pattern="HH:mm" timeOnly="true" />
+						 
+						 <p:outputLabel value="Hora Final: " />						
+						 <h:outputText  value=" #{sampleMB.event.eventTimeFinal} " locale="pt" pattern="HH:mm" timeOnly="true" />
+						
+						<p:outputLabel value="Protocolo:" />
+						<h:outputText value=" #{sampleMB.event.samplingProtocol.samplingProtocol}" />    
+						
+						<p:outputLabel value="Esforço " />
+						<h:outputText value=" #{sampleMB.event.sampleEffort}" /> 
+						
+						<p:outputLabel value="Área varrida: " />
+						<h:outputText  value=" #{sampleMB.event.sampleSizeValue}" />   
+												
+						<p:outputLabel value="Unidade de medida: " />                   
+		                <h:outputText value=" #{sampleMB.event.sizeUnit.sizeUnit}" /> 
+						  
+						<p:outputLabel value="Corpo d'água: " />    
+		                <h:outputText value=" #{sampleMB.event.waterBody.waterBody}" /> 
+					
+        		    <p:outputLabel  value="Localidade: " />     
+                    <h:outputText  value=" #{sampleMB.event.locality}" />    
+                    
+                    <p:outputLabel  value="Comentários da coleta: " />     
+                    <h:outputText  value="#{sampleMB.event.eventRemarks}" />                       
+					
+						<h:panelGrid columns="3">
+						
+						 
+							<p:commandButton disabled="#{sampleMB.last == false}" value="Anterior"
+								actionListener="#{sampleMB.previous}"
+								update=":frmVisualizar:pnlVisualizar"
+								process="@this" 
+								>
+							</p:commandButton>	
+								
+							<p:commandButton value="Próximo" disabled="#{sampleMB.first == false}"
+								actionListener="#{sampleMB.next}"
+								update=":frmVisualizar:pnlVisualizar"
+								process="@this" 																
+								>			
+							</p:commandButton>	
+							
+														
+							<p:commandButton value="Voltar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgVisualizar').hide();">								
+							</p:commandButton>
+							
+
+						</h:panelGrid>
+						<p:outputLabel />
+					</p:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM visualizar -->
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgConfirmacao" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+						update=":formSample:tbl"
+						oncomplete="PF('dlgConfirmacao').hide();"
+						onclick="PF('dlgEditar').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmDel">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Dejesa realmente remover este evento?</p>
+				<h:panelGrid columns="2" id="pnlDel">							
+							
+							<p:commandButton value="Confirmar remoção" icon="fa fa-check"
+								actionListener="#{sampleMB.delete()}"
+								update=":formSample:tbl"
+								oncomplete="PF('dlgDel').hide(); PF('dlgConfirmacaoDel').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgDel').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+    
+    
+    
+		<p:dialog header="Confirmar Remoção" widgetVar="dlgConfirmacaoDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+					    actionListener="#{sampleMB.open()}"
+						update=":formSample:tbl"
+						onclick="PF('dlgConfirmacaoDel').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		<!-- relatório -->
+		
+		<p:dialog header="Visualizar relatório" widgetVar="dlgRel" modal="true"
+			appendTo="@(body)" closable="true" draggable="true"
+			resizable="true">
+			
+			<h:form id="frmRel">
+			
+						<p:messages id="messages" autoUpdate="true" closable="false" />
+						
+						<p:outputLabel>Exportar nos formatos:</p:outputLabel>
+						
+						<h:commandLink style="padding: 5px;">
+							<p:graphicImage title="Exportar para excel." alt="Exportar para excel." value="../../images/excel.ico" width="24"/>
+					        <p:dataExporter type="xls" target="tbl" fileName="ocorrencias" pageOnly="true"/>
+					    </h:commandLink>
+					    
+					    
+					    <h:commandLink>
+					    	<p:graphicImage title="Exportar para CSV." alt="Exportar para CSV." value="../../images/csv.jpg" width="24"/>
+					        <p:dataExporter type="csv" target="tbl" fileName="ocorrencias" pageOnly="true"/>
+					    </h:commandLink>  
+					      
+					    
+			<p:dataTable id="tbl" var="occurrence" value="#{sampleMB.occurrenceList}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" rows="20" style="margin-bottom:20px;padding-top:20px; max-width: 1300px; min-width: 1100px"  
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]"
+                 >
+    
+		       <p:column headerText="N° do campo" width="300px">   
+		       		               
+		            <h:outputText value="#{occurrence.event.eventId}">
+		               <f:convertDateTime pattern="dd/MM/yyyy" /> 
+		            </h:outputText>  
+		                     
+		        </p:column>
+		        
+		        <p:column headerText="Protocolo">
+		            <h:outputText value="#{occurrence.event.samplingProtocol.samplingProtocol}" />
+		        </p:column>
+		      
+		      
+		        <p:column headerText="Área varrida">
+		            <h:outputText value="#{occurrence.event.sampleSizeValue}" />
+		        </p:column>
+		                     
+		       <p:column headerText="Latitude">
+		            <h:outputText value="#{occurrence.event.waterBody.decimalLatitude}" />
+		        </p:column>      
+		        
+		        <p:column headerText="Longitude">
+		            <h:outputText value="#{occurrence.event.waterBody.decimalLongitude}" />
+		        </p:column> 
+		        
+		        <p:column headerText="Corpo D'água">
+		            <h:outputText value="#{occurrence.event.waterBody.waterBody}" />
+		        </p:column>   
+		        
+		        <p:column headerText="Coletor">
+		            <h:outputText value="#{occurrence.recorder.personGivenName} #{occurrence.recorder.personSurName}" />
+		        </p:column>  
+		        
+		        <p:column headerText="N° Indivíduos">
+		            <h:outputText value="#{occurrence.individualCount}" />
+		        </p:column> 
+		        
+		        <p:column headerText="Quantidade Total">
+		            <h:outputText value="#{occurrence.organismQuantity}" />
+		        </p:column> 
+		        
+		        <p:column headerText="Espécie">
+		            <h:outputText value="#{occurrence.taxon.scientificName}" />
+		        </p:column> 
+		                             
+		     </p:dataTable>
+				
+			</h:form>
+		</p:dialog>
+		
+		<!-- fim relatório -->
+   
+    
+    
+   
+</div>      
+
+<style type="text/css">
+        .coluna1 {
+            width: 100px;
+        }
+        .coluna2 {
+            width: 700px;
+        }
+    </style>
+		
+	</ui:define>
+</ui:composition>
+
+    
+</html>
+
+
+
+

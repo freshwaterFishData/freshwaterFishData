@@ -1,0 +1,112 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+	  
+
+<!-- ini --> 
+
+<p:dialog widgetVar="dlgWaterBody" closable="true"
+			draggable="true" resizable="true" header="Selecione o evento de coleta associado a ocorrência."
+			modal="true" visible="false">
+			<h:form id="frmWaterBody">
+			
+				<h:panelGrid columns="2" id="pnlWaterBody">
+					<p:panelGrid columns="2">
+				
+			   <p:outputLabel for="cd" value="Corpo D'Água: " />
+               <p:inputText id="cd" value="#{waterBodyMB.waterBody.waterBody}" required="true" requiredMessage="O campo Corpo D'Água é obrigatório."/> 
+               
+               <p:outputLabel for="lon" value="Longitude: " />
+               <p:inputNumber id="lon" value="#{waterBodyMB.waterBody.decimalLongitude}" required="true" requiredMessage="O campo Corpo Longitude é obrigatório." />
+               
+               <p:outputLabel for="la" value="Latitude: " />
+               <p:inputNumber id="la" value="#{waterBodyMB.waterBody.decimalLatitude}" required="true" requiredMessage="O campo Corpo Latitude é obrigatório." />
+               
+               <p:outputLabel for="iden" value="Habitat: " />
+               <p:selectOneMenu id="iden" value="#{waterBodyMB.waterBody.habitat.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Habitat é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{waterBodyMB.habitatList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.habitat}" />
+        		</p:selectOneMenu> 
+        		
+        		 <p:outputLabel for="mu" value="Município: " />
+               <p:selectOneMenu id="mu" value="#{waterBodyMB.waterBody.county.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Munícipio é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{waterBodyMB.countyList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.county}" />
+        		</p:selectOneMenu>
+        		
+        		<p:outputLabel for="loca" value="Localidade: " />
+               <p:selectOneMenu id="loca" value="#{waterBodyMB.waterBody.municipality.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Localidade é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{waterBodyMB.municipalityList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.municipality}" />
+        		</p:selectOneMenu> 
+        		 
+
+											
+						<h:panelGrid columns="2">
+							<p:commandButton value="Inserir" icon="fa fa-check"
+								actionListener="#{waterBodyMB.save()}"
+								update=":form:tbl"
+								oncomplete="PF('dlgConfirmacao').show();">
+								
+							</p:commandButton>						
+
+						</h:panelGrid>
+						
+						<p:outputLabel />
+					</p:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Confirmar" widgetVar="dlgConfirmacao" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				
+				<h4>O que deseja fazer?</h4> 
+				
+				<h:panelGrid columns="3">
+					<p:commandButton value="Continuar na tela de cadastro." icon="fa fa-check"
+						update=":form:tbl"
+						oncomplete="PF('dlgConfirmacao').hide();">
+						
+					</p:commandButton>
+					
+					<p:commandButton value="Cadastrar um novo dado." icon="fa fa-check"
+						update=":frmWaterBody"
+						oncomplete="PF('dlgConfirmacao').hide();">
+						
+						<p:resetInput target=":frmWaterBody" />
+						
+					</p:commandButton>
+					
+					<p:commandButton value="Voltar a listagem inicial." icon="fa fa-check"
+						update=":form:tbl :frmWaterBody"
+						oncomplete="PF('dlgConfirmacao').hide(); PF('dlgWaterBody').hide();">
+						
+						<p:resetInput target=":frmWaterBody" />
+						
+					</p:commandButton>
+				</h:panelGrid>
+				
+			</h:form>
+		</p:dialog>
+
+		
+</html>
+
+
+

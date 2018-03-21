@@ -1,0 +1,248 @@
+html, body {
+	color: #6C8497 !important;
+	font-size: small;
+	text-align: justify;
+}
+
+.formulario {
+	text-align: center;
+}
+
+.error {
+	color: red;
+	background-color: #ffffcc;
+	border: solid 1px red;
+	padding: 5px;
+}
+
+.logo-banner {
+	padding: 10px;
+}
+
+.banner {
+	margin: 0px;
+	height: 170px;
+	width: 100%;
+	background-image: url("../images/plano_fundo_cabecalho.jpg");
+}
+
+.texto-banner h1 {
+	font-size: 25px;
+	margin: 50px 0 0 80px;
+	color: #27679f;
+}
+
+.imagem_topo {
+	float: left;
+}
+
+footer {
+	background-color: #3371a3;
+	color: #ffffcc;
+	text-align: center;
+	border: solid 1px Gray;
+	font-size: 10pt;
+	font-weight: bold;
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	left: 0px;
+}
+
+footer p {
+	padding-top: 35px;
+}
+
+form h2 {
+	margin: 15px 0px 25px 15px;
+}
+
+.menu {
+	background-color: #66acdf;
+	height: 35px;
+	padding-left: 15px;
+	padding-top: 7px;
+}
+
+.menu span {
+	float: right;
+	padding-right: 20px;
+	color: #eee;
+	font-size: 15px;
+}
+
+.menu a {
+	color: #eee;
+	font-size: 15px;
+}
+
+.conteudo_principal {
+	margin-top: 40px;
+}
+
+.conteudo_principal  p {
+	margin-left: 15px;
+	margin-right: 25px;
+}
+
+.conteudo_principal figure {
+	float: left;
+	margin-left: 2px;
+	margin-right: 5px;
+	margin-bottom: 15px;
+}
+
+.conteudo_principal h2 {
+	margin-left: 15px;
+}
+
+.logo-evento {
+	margin-top: 15px;
+	float: right;
+}
+
+.form-login {
+	text-align: center;
+	margin-top: 25px;
+	margin-left: 285px;
+	margin-bottom: 250px;
+}
+
+.apoioFinanceiro {
+	padding-right: 5px;
+	padding-left: 5px;
+	color: #000000;
+}
+
+.comissao figure {
+	float: right;
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 30px;
+}
+
+.comissao img {
+	width: 325px;
+}
+
+.logo_jpe {
+	width: 325px;
+}
+
+.recuperarSenha {
+	margin-bottom: 410px;
+}
+
+.relatorio_impressao {
+	page-break-after: always;
+}
+
+.resumo-autores {
+	font-weight: bold;
+}
+
+.panelGridCenter {
+	margin: 0 auto;
+}
+
+.linkLogout {
+	background-color: #e7e7e7;
+	padding-top: 15px;
+	width: 70px;
+	height: 50px;
+}
+
+.txtLogout {
+	color: #555555;
+	padding-left: 10px;
+}
+
+.linkLogout a:hover {
+	text-decoration: none;
+	color: #555555;
+}
+
+.titulo_principal {
+	margin: 0 auto;
+	padding: 25px;
+	text-align: center;
+}
+
+.tabela_principal {
+	margin: 0 auto;
+	text-indent: 1.0em;
+	width: 1000px;
+}
+
+.instrucoes_principal {
+	text-indent: 1.1em;
+	padding: 20px 20px 0px 20px;
+	padding-bottom: 75px;
+	text-align: justify;
+}
+
+.botaoLadoDireito {
+	padding-left: 200px;
+}
+
+.botaoLadoEsquerdo {
+	float: left;
+}
+
+.avisocursoInscricao {
+	color: #FF0000;
+}
+
+#btnImprimir {
+	padding-right: 20px;
+	float: right;
+	padding-bottom: 100px;
+}
+
+@media print {
+	#header {
+		display: none;
+	}
+	#footer {
+		display: none;
+	}
+	#btnImprimir {
+		display: none;
+	}
+	#content {
+		width: 100%;
+	}
+}
+
+
+.alinharCentro {
+	  width: 760px;	  margin:0 auto;
+	  	   
+}
+
+
+#bottom {
+	
+	
+	
+    position:fixed;
+    padding-top: 10;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    width: 100%;
+    bottom: 0;
+    background-color: #89c6f5;
+    text-align: center;
+    height: 50px;
+    clear: both;
+    left: 0;    
+    right: 0;
+    
+    
+    
+}
+
+.gravar {
+	background-image: url("../images/save.jpeg");
+}

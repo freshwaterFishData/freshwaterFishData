@@ -1,0 +1,396 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+ <div class="container" align="center" >
+ 
+    <!-- ini  -->
+    <p:panel id="ident" header="Evento de Coleta do projeto #{waterMB.event.subproject.subprojectTitle}" style="width: 700px;">         
+       <div class="row panel-body">   
+          
+                   
+        <div class="form-group col-md-4">
+                <p:outputLabel value="Data: " />  <h:outputText value="#{waterMB.event.eventDate}" />
+        </div>
+        
+        <div class="form-group col-md-2">
+                <p:outputLabel value="Hora: " />  <h:outputText value="#{waterMB.event.eventTime}" />
+        </div>
+        
+        <div class="form-group col-md-6">
+                <h:outputLabel value="Corpo d'água: " />  <h:outputText value="#{waterMB.event.waterBody.waterBody}" />
+        </div>                              
+                           
+        
+      </div>
+    </p:panel>             
+    <!-- fim -->
+	
+	
+<p:panel id="basic" style="width: 700px; align:center" header="Ocorrências">
+
+	  
+  <h:form id="formSample" > 
+     
+    <p:dataTable id="tbl" var="water" value="#{waterMB.waterList}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" rows="10" style="margin-bottom:20px; padding-top:20px; max-width: 600px; min-width: 600px;" 
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]"
+                 > 
+    
+       <p:column headerText="Salinidade" filterBy="#{water.salinity}" width="120" >       
+       		               
+            <h:outputText value="#{water.salinity}" />
+                     
+        </p:column>
+        
+        <p:column headerText="Temperatura" filterBy="#{water.temperature}" width="120">
+            <h:outputText value="#{water.temperature}" />
+        </p:column>
+        
+        <p:column headerText="Percentual de Oxigênio" filterBy="#{water.dissolvedOxigenPercentual}" width="120" >
+            
+            <h:outputText value="#{water.dissolvedOxigenPercentual}" />
+        </p:column>    
+              
+      <p:column headerText="Opções" width="150">
+      		<div align="center">
+      
+      					<p:commandButton icon="fa fa-eye" 
+								oncomplete="PF('dlgVisualizar').show();"
+								update=":frmVisualizar:pnlVisualizar">
+								<f:setPropertyActionListener value="#{water}"
+									target="#{waterMB.water()}" />
+						</p:commandButton>
+      					
+						
+							<p:commandButton icon="fa fa-edit" 
+								oncomplete="PF('dlgEditar').show();"
+								update=":frmEditar:pnlEditar">
+								<f:setPropertyActionListener value="#{water}"
+									target="#{waterMB.water()}" />
+							</p:commandButton>
+							
+							
+							<p:commandButton icon="fa fa-eraser" 
+								oncomplete="PF('dlgDel').show();"
+								update=":frmDel:pnlDel">
+								<f:setPropertyActionListener value="#{water}"
+									target="#{waterMB.water()}" />
+							</p:commandButton>
+							
+							
+						</div>
+		</p:column>
+	    
+	          
+                     
+     </p:dataTable>
+          
+     
+      </h:form>  
+     
+  <h:form>   
+    <div  align="right" style="padding-right: 35px"> 
+ 	  	 <h:commandButton action="#{insertWaterMB.open()}"	value="Inserir dados da água" styleClass="ui-priority-primary" >
+ 	  	     <f:param id="eventId" name="eventId" value="#{waterMB.event.id}"/>
+ 	  	 </h:commandButton> 
+ 	 	
+ 	 	<space></space>
+ 	 	
+ 	  	 <h:commandButton action="#{sampleMB.backOfOccurrance()}" value="Voltar" styleClass="ui-priority-primary" >
+ 	  	 	<f:param id="subProjectId" name="subprojectId" value="#{waterMB.event.subproject.id}"/>  
+ 	  	 </h:commandButton> 
+ 	  	 
+ 	  	 	  	 
+    </div>
+     	
+    
+ </h:form> 
+     
+   </p:panel>       
+   
+   <!--DIALOGO EDITAR -->
+
+		<p:dialog widgetVar="dlgEditar" closable="false"
+			draggable="true" resizable="false" header="Editar Dados da água"
+			modal="true" appendTo="@(body)">
+			
+			<h:form id="frmEditar">
+			
+				<h:panelGrid columns="4" id="pnlEditar">
+				  <p:panelGrid columns="4" style="width:700px;">
+										
+				
+                <p:outputLabel value="Temperatura: " />
+                <p:inputText value="#{waterMB.water.temperature}" />   
+            
+                <p:outputLabel value="Unidade: " />                  
+                <p:selectOneMenu value="#{waterMB.water.temperatureUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="Graus" itemValue="Graus" />
+        		</p:selectOneMenu>  
+        		
+        		
+                <p:outputLabel value="Percentual de Oxigênio:" />
+                <p:inputText value="#{waterMB.water.dissolvedOxigenPercentual}" />  
+                        
+          		<p:outputLabel value="ML oxigênio dissolvidos: " />
+                <p:inputText value="#{waterMB.water.dissolvedOxigenMl}" />   
+                
+                <p:outputLabel value="Salinidade: " />
+                <p:inputText value="#{waterMB.water.salinity}" /> 
+         		
+         		<p:outputLabel value="PH: " />
+                <p:inputText value="#{waterMB.water.ph}" />   
+          
+          		<p:outputLabel value="Carbono: " />
+                <p:inputText value="#{waterMB.water.dissolvedOrganicCaborn}" />   
+           
+           		<p:outputLabel value="Unidade: " /> 
+                <p:selectOneMenu value="#{waterMB.water.dissolvedOrganicCabornUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="porcentagem" />
+        		</p:selectOneMenu>  
+        		
+        		<p:outputLabel value="Nitrogênio: " />
+                <p:inputText value="#{waterMB.water.nitrogen}" />   
+                    
+                <p:outputLabel value="Unidade: " />                               
+                <p:selectOneMenu value="#{waterMB.water.nitrogenUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="porcentagem" />
+        		</p:selectOneMenu>  
+        	  
+                <p:outputLabel value="Clorofila: " />
+                <p:inputText value="#{waterMB.water.clorophyll}" />   
+         
+         		<p:outputLabel value="Unidade: " /> 
+                <p:selectOneMenu value="#{waterMB.water.clorophyllUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="porcentagem" />
+        		</p:selectOneMenu>          	  
+           
+          		<p:outputLabel value="Profundidade: " />
+                <p:inputText value="#{waterMB.water.depth}" />   
+          
+         		<p:outputLabel value="Unidade: " /> 
+                <p:selectOneMenu value="#{waterMB.water.depthUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="porcentagem" />
+        		</p:selectOneMenu> 
+        		
+        		<p:outputLabel value="Profundidade Sechi: " />
+                <p:inputText value="#{waterMB.water.sechiDepth}" />   
+           
+           		<p:outputLabel value="Unidade: " />
+           		<p:selectOneMenu value="#{waterMB.water.sechiDepthUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="porcentagem" />
+        		</p:selectOneMenu>          	  
+           
+           		<p:outputLabel value="Condutividade: " />
+                <p:inputText value="#{waterMB.water.conductivity}" />   
+          
+          		<p:outputLabel value="Dados da chuva: " /> 
+                <p:selectOneMenu value="#{waterMB.water.rain.id}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="Alta" itemValue="1" />
+        		</p:selectOneMenu>          	  
+                                    
+              </p:panelGrid>
+					</h:panelGrid>                          
+                       						
+						<h:panelGrid columns="4">
+						  
+						  
+							<p:commandButton value="Confirmar edição" icon="fa fa-check"
+								actionListener="#{waterMB.edit()}"
+								update=":formSample:tbl"
+								oncomplete="PF('dlgConfirmacao').show();">
+							</p:commandButton>
+							
+							
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgEditar').hide();">
+								<p:resetInput target="pnlEditar"></p:resetInput>
+							</p:commandButton>
+							
+
+						</h:panelGrid>
+						
+					   					
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DIALOGO EDITAR -->
+		
+		  <!--DIALOGO visualizar -->
+
+		<p:dialog widgetVar="dlgVisualizar" closable="false"
+			draggable="true" resizable="false" header="Visualizar dados da água"
+			modal="true" appendTo="@(body)" >
+			<h:form id="frmVisualizar">
+			
+				<h:panelGrid columns="4" id="pnlVisualizar">
+					<p:panelGrid columns="4" style="width:600px;">
+						               
+                 
+            
+                <p:outputLabel value="Temperatura: " />
+                <h:outputText value="#{waterMB.water.temperature}" />   
+            
+                <p:outputLabel value="Unidade: " />        
+                <h:outputText value="#{waterMB.water.temperatureUnit}"/>        	  
+           
+                <p:outputLabel value="Percentual de Oxigênio:" />
+                <h:outputText value="#{waterMB.water.dissolvedOxigenPercentual}" />  
+                        
+          		<p:outputLabel value="ML oxigênio dissolvidos: " />
+                <h:outputText value="#{waterMB.water.dissolvedOxigenMl}" />   
+                
+                 <p:outputLabel value="Salinidade: " />
+                <h:outputText value="#{waterMB.water.salinity}" /> 
+         		
+         		<p:outputLabel value="PH: " />
+                <h:outputText value="#{waterMB.water.ph}" />   
+          
+          		<p:outputLabel value="Carbono: " />
+                <h:outputText value="#{waterMB.water.dissolvedOrganicCaborn}" />   
+           
+           		<p:outputLabel value="Unidade: " /> 
+           		<h:outputText value="#{waterMB.water.dissolvedOrganicCabornUnit}" /> 
+           		        		
+        		<p:outputLabel value="Nitrogênio: " />
+                <h:outputText value="#{waterMB.water.nitrogen}" />   
+                           
+                <p:outputLabel value="Unidade: " />
+                <h:outputText value="#{waterMB.water.nitrogenUnit}" />   
+                           
+                <p:outputLabel value="Clorofila: " />
+                <h:outputText value="#{waterMB.water.clorophyll}" />   
+         
+         		<p:outputLabel value="Unidade: " /> 
+         		<h:outputText value="#{waterMB.water.clorophyllUnit}" /> 
+                
+          		<p:outputLabel value="Profundidade: " />
+                <h:outputText value="#{waterMB.water.depth}" />   
+          
+         		<p:outputLabel value="Unidade: " /> 
+         		<h:outputText value="#{waterMB.water.depthUnit}" />
+        		
+        		<p:outputLabel value="Profundidade Sechi: " />
+                <h:outputText value="#{waterMB.water.sechiDepth}" />   
+           
+           		<p:outputLabel value="Unidade: " />
+           		<h:outputText value="#{waterMB.water.sechiDepthUnit}" />
+           		      	  
+           
+           		<p:outputLabel value="Condutividade: " />
+                <h:outputText value="#{waterMB.water.conductivity}" />   
+          
+          		<p:outputLabel value="Dados da chuva: " /> 
+          		<h:outputText value="#{waterMB.water.rain.rainValue}" />
+                
+                           
+                						                  
+					
+						<h:panelGrid columns="2">
+														
+							<p:commandButton value="Voltar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgVisualizar').hide();">								
+							</p:commandButton>
+							
+
+						</h:panelGrid>
+						<p:outputLabel />
+						
+				  </p:panelGrid>
+				</h:panelGrid>  
+				
+			</h:form>
+		</p:dialog>
+		<!-- FIM viazualizar -->
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgConfirmacao" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+						update=":formSample:tbl"
+						oncomplete="PF('dlgConfirmacao').hide();"
+						onclick="PF('dlgEditar').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmDel">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Deseja realmente remover estes dados?</p>
+				<h:panelGrid columns="2" id="pnlDel">
+							
+							
+							<p:commandButton value="Confirmar remoção" icon="fa fa-check"
+								actionListener="#{waterMB.delete()}"
+								update=":formSample:tbl"
+								oncomplete="PF('dlgDel').hide(); PF('dlgConfirmacaoDel').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgDel').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+    
+    
+    
+		<p:dialog header="Confirmar Remoção" widgetVar="dlgConfirmacaoDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+					    actionListener="#{waterMB.openDel()}"
+						update=":formSample:tbl"
+						onclick="PF('dlgConfirmacaoDel').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+   
+
+    
+ 
+     
+      
+   
+</div>      
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+

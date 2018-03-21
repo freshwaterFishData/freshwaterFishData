@@ -1,0 +1,415 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+ <div class="container" align="center" >
+ 
+    <!-- ini  -->
+    <p:panel id="ident" style="width: 700px; align:center" header="Evento de Coleta do projeto #{occurrenceMB.event.subproject.subprojectTitle}" >         
+       <div class="row panel-body">   
+          
+                   
+        <div class="form-group col-md-4">
+                <p:outputLabel value="Data: " />  
+                <h:outputText value="#{occurrenceMB.event.eventDate}">
+                	<f:convertDateTime pattern="dd/MM/yyyy" /> 
+                </h:outputText>
+                
+        </div>
+        
+        <div class="form-group col-md-2">
+                <p:outputLabel value="Hora: " />  <h:outputText value="#{occurrenceMB.event.eventTime}" />
+        </div>
+        
+        <div class="form-group col-md-6">
+                <h:outputLabel value="Corpo d'água: " />  <h:outputText value="#{occurrenceMB.event.waterBody.waterBody}" />
+        </div>                              
+                           
+        
+      </div>
+    </p:panel>             
+    <!-- fim -->
+	
+	
+<p:panel id="basic" style="width: 700px; align:center" header="Ocorrências">
+
+	  
+  <h:form id="formSample" > 
+     
+    <p:dataTable id="tbl" var="occurrence" value="#{occurrenceMB.occurrenceList}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" rows="10" style="margin-bottom:20px; padding-top:20px; max-width: 600px; min-width: 600px;" 
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]"
+                 > 
+            
+        <p:column headerText="Nome científico" filterBy="#{occurrence.taxon.scientificName}" filterMatchMode="contains" width="120">
+            <h:outputText value="#{occurrence.taxon.scientificName}" />
+        </p:column>
+        
+        <p:column headerText="Número de Indivíduos" filterBy="#{occurrence.individualCount}"  filterMatchMode="contains" width="120" >
+            
+            <h:outputText value="#{occurrence.individualCount}" />
+        </p:column>
+        
+      <p:column width="80" align="center" > 
+      <f:facet name="header" >
+                <h:outputText value="Organismo"/>
+      </f:facet>	   
+	    <a href="listOrganism.jsf?id=#{occurrence.id}" class="fa fa-edit" style="padding-left: 25px;" title="Gerenciar dados dos Organismos"></a>	   
+      </p:column>
+          
+              
+      <p:column headerText="Opções" width="150">
+      		<div align="center">
+      
+      					<p:commandButton id="visu" icon="fa fa-eye" 
+      							actionListener="#{occurrenceMB.verificarPosicao(occurrence)}"
+								oncomplete="PF('dlgVisualizar').show();"
+								update=":frmVisualizar">
+								<f:setPropertyActionListener value="#{occurrence}"
+									target="#{occurrenceMB.occurrence()}" />
+								
+								<p:tooltip for="visu" value="Visualizar Ocorrência" trackMouse="true" />
+									
+						</p:commandButton>
+      					
+						
+							<p:commandButton id="edit" icon="fa fa-edit" 
+								oncomplete="PF('dlgEditar').show();"
+								update=":frmEditar:pnlEditar :frmEditar:identificacao ">
+								<f:setPropertyActionListener value="#{occurrence}"
+									target="#{occurrenceMB.occurrence()}" />
+									
+								<p:tooltip for="edit" value="Editar Ocorrência" trackMouse="true" />
+									
+							</p:commandButton>
+							
+							
+							<p:commandButton id="exc" icon="fa fa-eraser" 
+								oncomplete="PF('dlgDel').show();"
+								update=":frmDel:pnlDel">
+								<f:setPropertyActionListener value="#{occurrence}"
+									target="#{occurrenceMB.occurrence()}" />
+								
+								<p:tooltip for="exc" value="Excluir Ocorrência" trackMouse="true" />
+									
+							</p:commandButton>
+							
+							
+						</div>
+		</p:column>
+	    
+	          
+                     
+     </p:dataTable>
+          
+     
+      </h:form>  
+     
+  <h:form>   
+    <div  align="right" style="padding-right: 35px"> 
+ 	  	 
+ 	  	 <p:commandButton action="#{insertOccurrenceMB.open()}"	value="Inserir Ocorrência" styleClass="ui-priority-primary" >
+ 	  	   		<f:param id="id" name="id" value="#{occurrenceMB.event.id}"/>
+ 	  	 </p:commandButton>
+ 	  	 
+ 	  	 <space></space>
+ 	  	 
+ 	  	 <p:commandButton action="#{sampleMB.backOfOccurrance()}"	value="Voltar" styleClass="ui-priority-primary" >
+ 	  	   		<f:param id="subprojectId" name="subprojectId" value="#{occurrenceMB.event.subproject.id}" />
+ 	  	 </p:commandButton>
+ 	  	 	  	 
+    </div>
+     	
+    
+ </h:form> 
+     
+   </p:panel>       
+   
+   <!--DIALOGO EDITAR -->
+
+		<p:dialog widgetVar="dlgEditar" closable="false"
+			draggable="true" resizable="false" header="Editar Ocorrência"
+			modal="true" appendTo="@(body)">
+			
+			<h:form id="frmEditar">
+			
+				<h:panelGrid columns="2" id="pnlEditar">
+					<p:panelGrid columns="2" style="width:450px;">
+										
+						<h:inputHidden value="#{occurrenceMB.event.id}" />
+											<!-- ini -->
+						
+               <p:outputLabel value="Base do registro: " /> 
+                
+                 <p:selectOneMenu value="#{occurrenceMB.occurrence.basisOfRecorded}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="PreservedSpecimen" itemValue="PreservedSpecimen" />
+            			<f:selectItem itemLabel="LivingSpeciment" itemValue="LivingSpeciment" />
+            			<f:selectItem itemLabel="HumanObservation" itemValue="HumanObservation" />
+            			<f:selectItem itemLabel="MachineObservation" itemValue="MachineObservation" />
+            			<f:selectItem itemLabel="Sample" itemValue="Sample" />
+        		 </p:selectOneMenu> 
+                       
+               <p:outputLabel value="Coletor: " /> 
+                    
+        		  
+        		  <p:selectOneMenu id="rec" value="#{occurrenceMB.occurrence.recorder.id}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{occurrenceMB.personList}" var="item3"
+									itemValue="#{item3.id}" itemLabel="#{item3.personGivenName} #{item3.personSurName}" />
+									
+				  </p:selectOneMenu>
+                
+
+				<p:outputLabel value="Nome científico: " />
+                <p:selectOneMenu  value="#{occurrenceMB.occurrence.taxon.id}" effect="fold" editable="false" filter="true" filterMatchMode="contains">
+            			<f:selectItem itemLabel="Selecione" itemValue="" noSelectionOption="true" />
+            			
+            			<f:selectItems value="#{occurrenceMB.taxonList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.scientificName}" />
+        		</p:selectOneMenu>
+               
+                <p:outputLabel value="Números de indivíduos: " />
+                <p:inputText value="#{occurrenceMB.occurrence.individualCount}" />   
+               
+                <p:outputLabel value="Peso dos organismos: " />
+                <p:inputText  value="#{occurrenceMB.occurrence.organismQuantity}" />   
+            
+               <p:outputLabel value="Unidade: " />   
+                 
+               <p:selectOneMenu value="#{occurrenceMB.occurrence.organismQuantityTypeId.id}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			            			
+            			<f:selectItems value="#{occurrenceMB.organismQuantityList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.organismQuantityType}" />
+        		</p:selectOneMenu>  
+        	   
+            
+           
+   </p:panelGrid>
+</h:panelGrid>                            
+                                    
+                       
+     <p:panel id="ident" header="Identificação" >         
+                         
+<h:panelGrid columns="2" id="identificacao">
+					<p:panelGrid columns="2">     
+          
+                 <p:outputLabel value="Identificador: " />  
+                 
+                 <p:selectOneMenu id="i" value="#{occurrenceMB.occurrence.identifier.id}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{occurrenceMB.personList}" var="item2"
+									itemValue="#{item2.id}" itemLabel="#{item2.personGivenName} #{item2.personSurName}" />
+										
+				  </p:selectOneMenu>	  
+         
+                <p:outputLabel value="Data: " />
+             	
+             	<p:calendar id="date" value="#{occurrenceMB.occurrence.identifiedDate}" locale="pt" pattern="dd/MM/yyyy" mask="true" />
+						
+                                             
+            
+                <p:outputLabel  value="Anotações: " />     
+                <h:inputTextarea rows="4" cols="40" value="#{occurrenceMB.occurrence.identificationRemarks}" />    
+    </p:panelGrid>
+</h:panelGrid>                   
+</p:panel>             
+    
+            
+						
+						<!-- fim -->
+						
+						<h:panelGrid columns="2">
+							<p:commandButton value="Confirmar edição" icon="fa fa-check"
+								actionListener="#{occurrenceMB.edit()}"
+								update=":formSample:tbl"
+								oncomplete="PF('dlgConfirmacao').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgEditar').hide();">
+								<p:resetInput target="pnlEditar"></p:resetInput>
+							</p:commandButton>
+
+						</h:panelGrid>
+						<p:outputLabel />
+					
+
+			</h:form>
+		</p:dialog>
+		<!-- FIM DIALOGO EDITAR -->
+		
+		  <!--DIALOGO visualizar -->
+
+		<p:dialog widgetVar="dlgVisualizar" closable="false"
+			draggable="true" resizable="false" header="Visualizar Ocorrência"
+			modal="true" appendTo="@(body)" >
+			<h:form id="frmVisualizar">
+			
+				<h:panelGrid columns="2" id="pnlVisualizar">
+					<p:panelGrid columns="2" style="width:450px;">
+						
+               <p:outputLabel value="Base do registro: "/> 
+               <h:outputText value="#{occurrenceMB.occurrence.basisOfRecorded}"/>    
+                       
+               <p:outputLabel value="Coletor: " /> 
+               <h:outputText value="#{occurrenceMB.occurrence.recorder.personGivenName} #{occurrenceMB.occurrence.recorder.personSurName}" />
+
+				<p:outputLabel value="Nome científico: " />
+				<h:outputText value="#{occurrenceMB.occurrence.taxon.scientificName}" />
+				
+                <p:outputLabel value="Números de indivíduos: " />
+                <h:outputText value="#{occurrenceMB.occurrence.individualCount}" />   
+               
+                <p:outputLabel value="Peso dos organismos: " />
+                <h:outputText  value="#{occurrenceMB.occurrence.organismQuantity}" />   
+            
+               <p:outputLabel value="Unidade: " />   
+               <h:outputText  value="#{occurrenceMB.occurrence.organismQuantityTypeId.organismQuantityType}" />   
+                 
+               
+           
+   </p:panelGrid>
+</h:panelGrid>                            
+                                    
+                       
+     <p:panel id="ident" header="Identificação" >         
+                         
+<h:panelGrid columns="2" id="identificacao">
+					<p:panelGrid columns="2">     
+          
+                 <p:outputLabel value="Identificador: " />  
+                 <h:outputText  value="#{occurrenceMB.occurrence.identifier.personGivenName} #{occurrenceMB.occurrence.identifier.personSurName}" />
+                 	  
+         
+                <p:outputLabel value="Data: " />
+                <h:outputText value="#{occurrenceMB.occurrence.identifiedDate}"> 
+                			<f:convertDateTime pattern="dd/MM/yyyy"/> 
+             	</h:outputText> 
+                                             
+            
+                <p:outputLabel  value="Anotações: " />     
+                <h:inputTextarea rows="4" cols="40" value="#{occurrenceMB.occurrence.identificationRemarks}" disabled="true"/>    
+   </p:panelGrid>
+</h:panelGrid>                   
+</p:panel>             
+    
+            
+						
+						<!-- fim -->
+						                  
+					
+						<h:panelGrid columns="3">
+						
+						<p:commandButton value="Anterior" disabled="#{occurrenceMB.last == false}" 
+								actionListener="#{occurrenceMB.previous}"
+								update=":frmVisualizar"
+								process="@this" 
+								>
+						</p:commandButton>	
+								
+							<p:commandButton value="Próximo" disabled="#{occurrenceMB.first == false}"
+								actionListener="#{occurrenceMB.next}"
+								update=":frmVisualizar"
+								process="@this" 																
+								>			
+							</p:commandButton>	
+														
+							<p:commandButton value="Voltar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgVisualizar').hide();">								
+							</p:commandButton>
+							
+
+						</h:panelGrid>
+						<p:outputLabel />
+				
+			</h:form>
+		</p:dialog>
+		<!-- FIM viazualizar -->
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgConfirmacao" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+						update=":formSample:tbl"
+						oncomplete="PF('dlgConfirmacao').hide();"
+						onclick="PF('dlgEditar').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmDel">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Deseja realmente remover esta ocorrência?</p>
+				<h:panelGrid columns="2" id="pnlDel">
+							
+							
+							<p:commandButton value="Confirmar remoção" icon="fa fa-check"
+								actionListener="#{occurrenceMB.delete()}"
+								update=":formSample:tbl"
+								oncomplete="PF('dlgDel').hide(); PF('dlgConfirmacaoDel').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgDel').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+    
+    
+    
+		<p:dialog header="Confirmar Remoção" widgetVar="dlgConfirmacaoDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+					    actionListener="#{occurrenceMB.openDel()}"
+						update=":formSample:tbl"
+						onclick="PF('dlgConfirmacaoDel').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+   
+
+    
+ 
+     
+      
+   
+</div>      
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+

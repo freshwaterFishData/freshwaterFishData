@@ -1,0 +1,98 @@
+
+html {
+    width: 1000px;    
+}
+
+section {
+    /* background-image: url("../images/logo_7_2.jpg");     
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: 600px 520px;
+    */
+
+
+}
+
+.certificado {
+    text-align: center;
+}
+
+.texto_certificado {    
+    font-size: 18px;        
+    text-align: justify;
+    margin-left: 80px;
+    margin-bottom: 50px;
+    margin-top: 20px;
+    text-indent: 3.0em;
+    width: 1050px;
+}
+
+.alinhamento_centro {
+    text-align: center;
+}
+
+
+.texto_topo {    
+    margin-top: 5px;    
+    font-size: 18px;    
+    float: left;
+    text-align: center;    
+    margin-right: 10px;
+    margin-left: 200px;    
+}
+
+.imagem_topo {      
+    margin-left: 30px;
+    float: left;
+    height: 120px;
+}
+
+.logo_pe {    
+    margin-top: 10px;
+    margin-right: 20px;
+    float: right;
+    height: 100px;
+}
+
+.logo_campus {  
+    margin-top: 10px;
+    float: right;
+    height: 100px;
+}
+
+.tabela {
+    margin-top: 20px;
+    margin-left: 40px;
+    text-align: center;
+    width: 930px;
+
+}
+
+.linhas_tabela {
+    height: 40px;
+}
+
+.botao_imprimir {
+    float: right;
+    padding-top: 10px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+
+}
+.relatorio_impressao{   	
+    page-break-after: always;
+}
+
+@media print{   
+
+    #btnImprimir1 {
+        display: none;
+    }
+    #content{
+        width: 100%;
+    }
+
+}
+
+
+

@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+	<ui:include src="modalWaterBody.xhtml" />
+	
+ <div class="container" align="center" >
+ 	
+	
+<p:panel id="basic" style="width: 700px; align:center" header="Corpo D'Água">
+
+	  
+  <h:form id="form" >   
+     
+   
+  <div align="left" style="padding-left: 35px;">
+  	
+	<p:commandButton id="cad" icon="fa fa-plus" value="Cadastrar Corpo D'Água" 
+								oncomplete="PF('dlgWaterBody').show();">
+								<p:tooltip for="cad" value="cadastrar Novo" trackMouse="true" />
+									
+	</p:commandButton>
+  	
+  </div>
+  
+     
+    <p:dataTable id="tbl" var="waterBody" value="#{waterBodyMB.waterBodyList}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                 paginator="true" rows="10" style="margin-bottom:20px; padding-top:20px; max-width: 600px; min-width: 600px;" 
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]"
+                 > 
+    
+       <p:column headerText="Corpo D'Água" filterBy="#{waterBody.waterBody}" width="120" >       
+       		               
+            <h:outputText value="#{waterBody.waterBody}" />
+                     
+        </p:column>
+        
+        <p:column headerText="Longitude" filterBy="#{waterBody.decimalLongitude}" width="120">
+            <h:outputText value="#{waterBody.decimalLongitude}" />
+        </p:column>
+        
+        <p:column headerText="Latitude" filterBy="#{waterBody.decimalLatitude}" width="120">
+            <h:outputText value="#{waterBody.decimalLatitude}" />
+        </p:column>
+             
+              
+      <p:column headerText="Opções" width="150">
+      		<div align="center">
+      
+      											
+							<p:commandButton id="edit" icon="fa fa-edit" 
+								oncomplete="PF('dlgEditar').show();"
+								update=":frmEditar:pnlEditar">
+								
+								<f:setPropertyActionListener value="#{waterBody}"
+									target="#{waterBodyMB.waterBody}" />
+									
+								<p:tooltip for="edit" value="Editar" trackMouse="true" />
+									
+							</p:commandButton>
+							
+							
+							<p:commandButton id="exc" icon="fa fa-eraser" 
+								oncomplete="PF('dlgDel').show();"
+								update=":frmDel:pnlDel">
+								
+								<f:setPropertyActionListener value="#{waterBody}"
+									target="#{waterBodyMB.waterBody}" />
+								
+								<p:tooltip for="exc" value="Excluir" trackMouse="true" />
+									
+							</p:commandButton>
+							
+							
+						</div>
+		</p:column>
+	    
+	          
+                     
+     </p:dataTable>
+     
+          
+     
+      </h:form>  
+     
+    
+     
+  </p:panel>  
+   
+   
+    <!--DIALOGO EDITAR -->
+
+		<p:dialog widgetVar="dlgEditar" closable="false"
+			draggable="true" resizable="false" header="Editar"
+			modal="true" appendTo="@(body)">
+	
+		<h:form id="frmEditar">	
+										
+						
+              <h:panelGrid columns="2" id="pnlEditar">
+					<p:panelGrid columns="2">
+				
+			   <p:outputLabel value="Corpo D'Água: " />
+               <p:inputText value="#{waterBodyMB.waterBody.waterBody}" /> 
+               
+               <p:outputLabel value="Longitude: " />
+               <p:inputText value="#{waterBodyMB.waterBody.decimalLongitude}" />
+               
+               <p:outputLabel value="Latitude: " />
+               <p:inputText value="#{waterBodyMB.waterBody.decimalLatitude}" />
+               
+               <p:outputLabel for="iden" value="Habitat: " />
+               <p:selectOneMenu id="iden" value="#{waterBodyMB.waterBody.habitat.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Habitat é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{waterBodyMB.habitatList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.habitat}" />
+        		</p:selectOneMenu> 
+        		
+        		 <p:outputLabel for="mu" value="Município: " />
+               <p:selectOneMenu id="mu" value="#{waterBodyMB.waterBody.county.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Munícipio é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{waterBodyMB.countyList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.county}" />
+        		</p:selectOneMenu>
+        		
+        		<p:outputLabel for="loca" value="Localidade: " />
+               <p:selectOneMenu id="loca" value="#{waterBodyMB.waterBody.municipality.id}" effect="fold" editable="false" required="true" requiredMessage="O campo Localidade é obrigatório." >
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			
+            			<f:selectItems value="#{waterBodyMB.municipalityList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.municipality}" />
+        		</p:selectOneMenu> 
+        		 
+      </p:panelGrid>
+      </h:panelGrid>  		 
+        		              
+	 
+ 			<h:panelGrid columns="2">
+							<p:commandButton value="Confirmar edição" icon="fa fa-check"
+								actionListener="#{waterBodyMB.edit()}"
+								update=":form:tbl"
+								oncomplete="PF('dlgConfirmacaoEdit').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgEditar').hide();">
+								<p:resetInput target="pnlEditar"></p:resetInput>
+							</p:commandButton>
+
+			</h:panelGrid>
+			
+	</h:form>		
+			
+		
+		</p:dialog>	
+   
+   
+   <p:dialog header="Confirmar" widgetVar="dlgConfirmacaoEdit" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+						update=":form:tbl"
+						oncomplete="PF('dlgConfirmacaoEdit').hide();"
+						onclick="PF('dlgEditar').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		
+		
+		<p:dialog header="Confirmar" widgetVar="dlgDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmDel">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Deseja realmente remover este item?</p>
+				<h:panelGrid columns="2" id="pnlDel">
+							
+							
+							<p:commandButton value="Confirmar remoção" icon="fa fa-check"
+								actionListener="#{waterBodyMB.delete()}"
+								update=":form:tbl"
+								oncomplete="PF('dlgDel').hide(); PF('dlgConfirmacaoDel').show();">
+							</p:commandButton>
+							<p:commandButton value="Cancelar" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgDel').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		    
+		<p:dialog header="Confirmar Remoção" widgetVar="dlgConfirmacaoDel" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form>
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<h:panelGrid columns="2">
+					<p:commandButton value="OK" icon="fa fa-check"
+						update=":form:tbl"
+						onclick="PF('dlgConfirmacaoDel').hide();">
+					</p:commandButton>
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+   
+ </div>
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+

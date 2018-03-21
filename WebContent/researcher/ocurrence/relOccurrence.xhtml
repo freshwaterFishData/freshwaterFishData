@@ -1,0 +1,144 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+
+ 	
+ <div class="container" align="center" >	
+ 
+ <p:panel id="basic" header="Relatório de ocorrências">
+	
+	<h:form id="formRel" >    
+	
+	
+	
+	<p:panelGrid columns="8" id="pnlF">
+	
+	
+			<p:outputLabel value="Projeto:" />
+				<p:selectOneMenu value="#{reportMB.occurrence.event.subproject.id}" effect="fold" editable="false">
+           			<f:selectItem itemLabel="Selecione" itemValue="" />
+           			<f:selectItems value="#{reportMB.subProjectList}" var="item" itemValue="#{item.id}" itemLabel="#{item.subprojectTitle}" />
+       			</p:selectOneMenu> 
+			
+			 <p:outputLabel value="Data Inicial: " />
+             <p:calendar id="date" value="#{reportMB.occurrence.event.eventDate}" navigator="true" locale="pt" pattern="dd/MM/yyyy" mask="true" />  
+              
+             <p:outputLabel value="Data Final: " />
+             <p:calendar id="date2" value="#{reportMB.finalDate}" navigator="true" locale="pt" pattern="dd/MM/yyyy" mask="true" />  
+              
+              
+             <p:commandButton value="Enviar" icon="fa fa-check"
+								actionListener="#{reportMB.searchOccurrence()}"
+								update=":formRel:tbl">
+			</p:commandButton> 
+                 
+                
+				 		</p:panelGrid>	 	
+				 		
+				 		<p:messages id="messages" autoUpdate="true" closable="true" />	
+	
+	
+    <p:dataTable id="tbl" var="occurrence" value="#{reportMB.occurrenceList}"
+                 paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {Exporters}"
+                 paginator="true" rows="20" style="margin-bottom:20px;padding-top:20px; max-width: 1300px; min-width: 1100px"  
+                 currentPageReportTemplate="[Página: {currentPage} de {totalPages} ]"
+                 >
+    
+    	<f:facet name="{Exporters}">
+    		 <h:commandLink  style="float:right; padding-right: 10px;">	 
+			 	<p:graphicImage title="Exportar para excel." alt="Exportar para excel." value="../../images/excel.ico" width="24"/>	 
+		        <p:dataExporter type="xls" target="tbl" fileName="ocorrencias" pageOnly="true"/>
+		        
+		    </h:commandLink>  
+		    
+		    <h:commandLink  style="float:right; padding-right: 10px;">	 
+			 	<p:graphicImage title="Exportar para CSV." alt="Exportar para CSV." value="../../images/csv.jpg" width="24"/>	 
+		        <p:dataExporter type="csv" target="tbl" fileName="ocorrencias" pageOnly="true"/>
+		        
+		    </h:commandLink>  
+    	</f:facet>
+    
+       <p:column headerText="N° do campo" width="300px">   
+       		               
+            <h:outputText value="#{occurrence.event.eventId}">
+               <f:convertDateTime pattern="dd/MM/yyyy" /> 
+            </h:outputText>  
+                     
+        </p:column>
+        
+        <p:column headerText="Protocolo">
+            <h:outputText value="#{occurrence.event.samplingProtocol.samplingProtocol}" />
+        </p:column>
+      
+      
+        <p:column headerText="Área varrida">
+            <h:outputText value="#{occurrence.event.sampleSizeValue}" />
+        </p:column>
+                     
+       <p:column headerText="Latitude">
+            <h:outputText value="#{occurrence.event.waterBody.decimalLatitude}" />
+        </p:column>      
+        
+        <p:column headerText="Longitude">
+            <h:outputText value="#{occurrence.event.waterBody.decimalLongitude}" />
+        </p:column> 
+        
+        <p:column headerText="Corpo D'água">
+            <h:outputText value="#{occurrence.event.waterBody.waterBody}" />
+        </p:column>   
+        
+        <p:column headerText="Coletor">
+            <h:outputText value="#{occurrence.recorder.personGivenName} #{occurrence.recorder.personSurName}" />
+        </p:column>  
+        
+        <p:column headerText="N° Indivíduos">
+            <h:outputText value="#{occurrence.individualCount}" />
+        </p:column> 
+        
+        <p:column headerText="Quantidade Total">
+            <h:outputText value="#{occurrence.organismQuantity}" />
+        </p:column> 
+        
+        <p:column headerText="Espécie">
+            <h:outputText value="#{occurrence.taxon.scientificName}" />
+        </p:column> 
+                             
+     </p:dataTable>
+     
+     
+      </h:form>  
+     
+     
+   </p:panel>       
+       
+    
+   </div>     
+   
+   
+
+<style type="text/css">
+        .coluna1 {
+            width: 100px;
+        }
+        .coluna2 {
+            width: 700px;
+        }
+    </style>
+		
+	</ui:define>
+</ui:composition>
+
+    
+</html>
+
+
+
+

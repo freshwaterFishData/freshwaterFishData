@@ -1,0 +1,332 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+	
+     <div class="container">
+     
+		
+		<p:panel id="basic"  header="Projeto" style="width:1230px; float:left; margen-left: 0px;">
+    
+		
+		<h:form id="sample" class="form-inline">
+								   							
+		<div class="row panel-body">
+		
+			<div  class="form-group col-md-8" >
+                <p:outputLabel value="Nome do projeto: " for="nomeProjeto" >
+                </p:outputLabel> 
+                <p:inputText id="nomeProjeto" value="#{projectMB.subproject.subprojectTitle}" style="width: 750px;" 
+                	required="true" requiredMessage="O campo nome do projeto é obrigatório." >
+                </p:inputText> 
+                                   
+            </div>
+            	
+            
+            
+            <div  class="form-group col-md-4">                
+               <p:outputLabel for="ch" value="Palavras chave: " />
+               	  <p:inputText id="ch" value="#{projectMB.subproject.keywords}" style="width: 350px;" 
+               	   required="true" requiredMessage="O campo palavras chaves é obrigatório." />  
+               	   
+               	   <p:tooltip for="ch" value="As palavras chaves devem ser separadas por vírgula." trackMouse="true" />        
+                
+            </div>	
+        </div>
+        
+        <div class="row panel-body">    
+        
+        	<div  class="form-group col-md-12">
+                <div><p:outputLabel for="dp" value="Descrição do projeto: " /></div>
+               	  <p:inputTextarea id="dp" rows="4" cols="188" value="#{projectMB.subproject.subProjectDescription}" 
+               	  required="true" requiredMessage="O campo Descrição do projeto é obrigatório." />       
+            </div>
+       </div>    
+        
+        <div class="row panel-body">
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel for="cboFuncao" value="Criador: " /></div>
+                    <p:selectOneMenu id="cboFuncao" value="#{projectMB.subproject.subprojectCoordinatorId}" required="true" requiredMessage="O campo Criador é obrigatório."
+								filter="true" filterMatchMode="contains" >
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{projectMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />									
+								
+				  </p:selectOneMenu>   
+            </div>
+			
+		    <div  class="form-group col-md-2">
+                
+               <p:outputLabel for="cboIdi" value="Idioma do metadado: " />
+                    <p:selectOneMenu id="cboIdi" value="#{projectMB.subproject.metadataLanguage}"
+								filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Idioma do metadado é obrigatório." > 
+								
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItem itemLabel="Inglês" itemValue="eng" />
+								<f:selectItem itemLabel="Português" itemValue="pt_BR" />
+								
+				  </p:selectOneMenu>   
+            </div>   
+            
+            
+            
+            <div class="form-group col-md-2">
+               <p:outputLabel for="cboPMD" value="Provedor de metadados: " />
+                    <p:selectOneMenu id="cboPMD" value="#{projectMB.subproject.metadataProviderId}"
+								filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Provedor de metadados é obrigatório." > 
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{projectMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />
+									
+				  </p:selectOneMenu> 
+               
+            </div> 
+            
+            <div  class="form-group col-md-2">
+                <p:outputLabel for="cboLi" value="Licença: " />
+                    <p:selectOneMenu id="cboLi" value="#{projectMB.subproject.licence}"
+								filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Licença é obrigatório." > 
+								
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItem itemDescription="Esta licença permite que outros distribuam, remixem, adaptem e criem a partir do seu trabalho, mesmo para fins comerciais, desde que lhe atribuam o devido crédito pela criação original. É a licença mais flexível de todas as licenças disponíveis. É recomendada para maximizar a disseminação e uso dos materiais licenciados." itemLabel="Creative Commons Attribution (CC-BY) 4.0" itemValue="Creative Commons Attribution (CC-BY) 4.0" />
+								
+								<f:selectItem itemDescription="Esta licença permite que outros remixem, adaptem e criem a partir do seu trabalho para fins não comerciais, atribuindo-lhe o devido crédito, sem permissão para serem usados para fins comerciais." itemLabel="Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0" itemValue="Creative Commons Attribution Non Commercial (CC-BY-NC) 4.0" />
+								
+								<f:selectItem itemDescription="A pessoa que associou uma obra a esta licença dedicou a obra ao domínio público, renunciando a todos os seus direitos ao trabalho em todo o mundo sob a lei de direitos de autor, incluindo todos os direitos conexos, na medida do permitido por lei." itemLabel="Public Domain (CCO 1.0)" itemValue="Public Domain (CCO 1.0)" />
+								
+				  </p:selectOneMenu>
+				 
+                	
+            </div>
+                         
+                        
+        </div>    
+            
+            
+        <div class="row panel-body"> 
+        	 
+            
+            
+            <div  class="form-group col-md-2">
+                <p:outputLabel for="snc" value="Sigla N° do campo: " />
+                <p:inputText  id="snc" value="#{projectMB.subproject.sigla}" required="true" requiredMessage="O campo Sigla N° do campo é obrigatório." />                      
+            </div>
+        
+        	<div  class="form-group col-md-2">
+               <div><p:outputLabel for="cboCon" value="Contato: " /></div>
+                    <p:selectOneMenu id="cboCon" value="#{projectMB.subproject.contactId}"
+								filter="true" filterMatchMode="contains"  required="true" requiredMessage="O campo Contato é obrigatório." >
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+																	
+								<f:selectItems value="#{projectMB.personList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.personGivenName} #{item.personSurName}" />
+									
+				  </p:selectOneMenu> 
+				  
+            </div>	
+        
+           <div  class="form-group col-md-2">
+                <p:outputLabel for="cboIdioma" value="Idioma dos dados: " />
+                    <p:selectOneMenu id="cboIdioma" value="#{projectMB.subproject.dataLanguage}"
+								filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Idioma dos dados é obrigatório." >
+								
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItem itemLabel="Inglês" itemValue="eng" />
+								<f:selectItem itemLabel="Português" itemValue="pt_BR" />
+								
+				  </p:selectOneMenu> 
+                    
+            </div>
+            
+        </div>  
+        
+                
+        
+        <p:panel id="basic2"  header="Cobertura temporal" >
+         <div class="row panel-body">
+                               
+            
+            <div  class="form-group col-md-4">
+              <div><p:outputLabel for="dateini" value="Data Inicial: " /></div>  
+	          <p:calendar id="dateini" value="#{projectMB.subproject.inicialDateTemporal}" locale="pt" pattern="dd/MM/yyyy" mask="true" required="true" requiredMessage="O campo Data Inicial é obrigatório."/>      	
+	                   
+            </div>	               
+                               
+            
+            <div  class="form-group col-md-4">
+            
+	               <div><p:outputLabel for="dateEnd" value="Data Final: " /></div>
+	               <p:calendar id="dateEnd" value="#{projectMB.subproject.endDateTemporal}" locale="pt" pattern="dd/MM/yyyy" mask="true" required="true" requiredMessage="O campo Data Final é obrigatório." />
+            </div>	 
+            
+            
+            
+        </div>     
+        </p:panel>
+        
+      <p:panel id="basic"  header="Dados geográficos">  
+        <div class="row panel-body">
+                               
+            
+            <div  class="form-group col-md-2">
+            	<p:outputLabel for="oes" value="Oeste: " />
+               	  <p:inputNumber id="oes" value="#{projectMB.subproject.west}" required="true" requiredMessage="O campo Oeste é obrigatório." />
+            </div>	 
+            
+             <div  class="form-group col-md-2">
+             	<p:outputLabel for="les" value="Leste: " />
+               	<p:inputNumber id="les" value="#{projectMB.subproject.east}" required="true" requiredMessage="O campo Leste é obrigatório." />
+             
+            </div>
+            
+            <div  class="form-group col-md-2">
+            	<p:outputLabel for="sul" value="Sul: " />
+               	 <p:inputNumber id="sul" value="#{projectMB.subproject.south}" required="true" requiredMessage="O campo Sul é obrigatório." />
+            </div>
+            
+            <div  class="form-group col-md-2">
+            	<p:outputLabel for="norte" value="Norte: " />
+               	<p:inputNumber id="norte" value="#{projectMB.subproject.north}" required="true" requiredMessage="O campo Norte é obrigatório." />
+            </div>
+            
+            <div  class="form-group col-md-2">
+               <p:outputLabel for="descG" value="Descrição geográfica: " />
+               	  <p:inputTextarea id="descG" rows="4" cols="60" value="#{projectMB.subproject.geographicalDescription}" required="true" requiredMessage="O campo Descrição geográfica é obrigatório." />    
+            </div>	  
+            
+            
+        </div>
+        </p:panel>
+        
+        
+        <p:panel id="basic3"  header="Métodos de coleta">   
+        
+        <div class="row panel-body">
+                               
+            
+                      
+             <div  class="form-group col-md-4">
+	              <p:outputLabel for="ae" value="Área de estudo: " />
+               	  <p:inputTextarea id="ae" rows="4" cols="50" value="#{projectMB.subproject.studyExtendy}" required="true" requiredMessage="O campo Área de estudo é obrigatório." />
+               	  
+               	  <p:tooltip for="ae" value="Descrição da Área de amostra específica e a frequência de amostra (limites temporais, frequência de ocorrência)" trackMouse="true" />
+            </div>
+            
+            <div  class="form-group col-md-4">
+            	<p:outputLabel for="sd" value="Descrição da coleta: " />
+               	<p:inputTextarea id="sd" rows="4" cols="50" value="#{projectMB.subproject.sampleDescription}" required="true" requiredMessage="O campo Descrição da coleta é obrigatório." />
+               	
+               	<p:tooltip for="sd" value="Descrição dos protocolos usados durante o projeto de pesquisa." trackMouse="true" />
+            </div>
+            
+            <div  class="form-group col-md-4">
+            	<p:outputLabel for="sde" value="Descrição do passo: " />
+               	  <p:inputTextarea id="sde" rows="4" cols="50" value="#{projectMB.subproject.stepDescription}" required="true" requiredMessage="O campo Descrição do passo é obrigatório." />
+               	  <p:tooltip for="sde" value="Este campo permite um conjunto de elementos que documentam uma série de métodos e procedimentos utilizados no estudo, e as etapas de processamento que levam à produção dos arquivos de dados. Eles incluem descrições de texto dos procedimentos, Literatura relevante, software, instrumentação, fonte de dados e quaisquer medidas de controle de qualidade. Cada método deve ser descrito em detalhes suficientes para permitir que outros pesquisadores possam interpretar e repetir, se necessário, o estudo. " trackMouse="true" />
+            </div>
+            
+            
+        </div>   
+        
+        </p:panel>
+        
+       
+         
+     <div class="row panel-body">
+                                  
+            
+            <div class="form-group col-md-1">                  
+                <p:commandButton value="Salvar" 
+	                actionListener="#{projectMB.save()}"
+	                oncomplete="PF('dlgConfirmar').show();"	                
+	                validateClient="true" 
+                >                
+                    
+                </p:commandButton>               
+            </div>
+            
+            
+           <div class="form-group col-md-1">     
+            
+            <p:commandButton value="Voltar" onclick="window.history.back();" />               
+                        
+     	   </div> 	
+    </div> 
+            
+         
+         </h:form>
+         
+            
+    </p:panel>
+		     
+	<p:dialog header="Confirmar" widgetVar="dlgConfirmar" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmConfirmar">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				
+				<h:panelGrid columns="2" id="pnlConfirmar">							
+							
+							<p:commandButton value="Ok" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgConfirmar').hide(); PF('dlgPergunta').show();" update="sample"
+								>
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+		
+		<p:dialog header="Confirmar" widgetVar="dlgPergunta" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmPergunta">
+				
+				<h4>Deseja voltar a tela principal de projetos?</h4>
+				
+				<h:panelGrid columns="2" id="pnlPergunta">							
+							
+							<p:commandButton value="Sim" icon="fa fa-reply"
+								ajax="false"
+								action="project"
+								process="@this" oncomplete="PF('dlgPergunta').hide();" update="sample"
+								/>
+								
+							<p:commandButton value="Não, continuar nesta tela." 
+								ajax="false"
+								process="@this" oncomplete="PF('dlgPergunta').hide();" update="sample"
+								>	
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+		
+	  </div>	
+	  
+	  
+		
+	</ui:define>
+</ui:composition>
+
+
+</html>
+
+
+
+
+
+
+

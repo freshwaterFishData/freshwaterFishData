@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	  
+
+<!-- ini --> 
+
+<p:dialog widgetVar="dlgEditar" closable="true"
+			draggable="true" resizable="true" header="Selecione o evento de coleta associado a ocorrência."
+			modal="true" visible="true">
+			<h:form id="frmEditar">
+			
+				<h:panelGrid columns="2" id="pnlEditar">
+					<p:panelGrid columns="2">
+										
+					  
+						<p:outputLabel value="Número do campo:" />
+						 <p:selectOneMenu value="#{occurrenceMB.occurrence.event.id}" effect="fold" editable="false" filter="true" filterMatchMode="contains">
+	            			<f:selectItem itemLabel="Selecione" itemValue="" />
+	            			<f:selectItems value="#{occurrenceMB.eventList}" var="item" itemValue="#{item.id}" itemLabel="#{item.eventId}" />
+        				</p:selectOneMenu> 
+						
+											
+						<h:panelGrid columns="2">
+							<p:commandButton value="Enviar" icon="fa fa-check"
+								action="#{occurrenceMB.open()}" ajax="true">
+							</p:commandButton>						
+
+						</h:panelGrid>
+						
+						<p:outputLabel />
+					</p:panelGrid>
+				</h:panelGrid>
+
+			</h:form>
+		</p:dialog>
+
+<!-- fim -->
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+

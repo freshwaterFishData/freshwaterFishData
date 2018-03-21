@@ -1,0 +1,229 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+	<ui:include src="modalWaterBody.xhtml" />
+	
+	
+     <div class="container">
+     
+		
+		<p:panel id="basic"  header="Coleta">
+    
+		
+		<h:form id="sample" class="form-inline">
+					
+			<h:inputHidden value="#{insertSampleMB.event.id}" />
+			
+		<div class="row panel-body">
+		
+			<div  class="form-group col-md-2">
+                <p:outputLabel for="date" value="Data: " />
+                <p:calendar id="date" value="#{insertSampleMB.event.eventDate}" navigator="true" locale="pt" pattern="dd/MM/yyyy" mask="true"  required="true" requiredMessage="O campo data é obrigatório">
+                	<p:ajax event="dateSelect" listener="#{insertSampleMB.getSigla()}" process="date" update="nc" />
+                	<p:ajax event="blur" listener="#{insertSampleMB.getSigla()}" process="date" update="nc" />                      	
+                </p:calendar>  
+            </div> 
+		
+			<div  class="form-group col-md-2">
+                <p:outputLabel for="nc" value="Número do campo: " />
+                <p:inputText id="nc" value="#{insertSampleMB.event.eventId}" required="true" requiredMessage="O Número do campo é obrigatório">
+                </p:inputText>                     
+            </div>	
+		    
+            <div  class="form-group col-md-2">
+                <p:outputLabel  value="Hora Inicial: " />
+			    <p:calendar id="time" value="#{insertSampleMB.event.eventTime}" locale="pt" pattern="HH:mm" timeOnly="true"  />  
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <p:outputLabel  value="Hora Final: " />
+			    <p:calendar id="time2" value="#{insertSampleMB.event.eventTimeFinal}" locale="pt" pattern="HH:mm" timeOnly="true"  />  
+            </div>
+            
+            <div class="form-group col-md-2">
+                <p:outputLabel for="pro" value="Protocolo: " />  
+                
+                 <p:selectOneMenu  id="pro" value="#{insertSampleMB.event.samplingProtocol.id}"
+								filter="true" filterMatchMode="contains" required="true" requiredMessage="O Protocolo é obrigatório">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{insertSampleMB.samplingProtocolAList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.samplingProtocol}" />
+				  </p:selectOneMenu>
+                     
+               
+            </div> 
+            
+            <div  class="form-group col-md-2">
+                <p:outputLabel  value="Esforço: " />    
+                <div>            					 
+					 <p:inputText value="#{insertSampleMB.event.sampleEffort}" />
+				 </div>
+                                  
+            </div>	
+             
+                        
+        </div>    
+            
+            
+        <div class="row panel-body"> 
+        
+           <div  class="form-group col-md-2">
+                <p:outputLabel  value="Área varrida: " />
+                <p:inputNumber  value="#{insertSampleMB.event.sampleSizeValue}" />
+                    
+            </div>
+            
+            <div  class="form-group col-md-2">                
+                <p:outputLabel value="Unidade de medida: " />   
+                
+                <p:selectOneMenu  value="#{insertSampleMB.event.sizeUnit.id}"
+								filter="true" filterMatchMode="contains">
+								<f:selectItems value="#{insertSampleMB.sizeUnitListAList}" var="item"
+									itemValue="#{item.id}" itemLabel="#{item.sizeUnit}" />
+				  </p:selectOneMenu>
+				               	                   
+                
+            </div>	
+                     
+          
+            <div  class="form-group col-md-4">
+                <div><p:outputLabel for="cagu" value="Corpo d'água: " /></div>    
+                
+                	  <p:selectOneMenu  id="cagu" value="#{insertSampleMB.event.waterBody.id}" filter="true" filterMatchMode="contains" required="true" requiredMessage="O campo Corpo d'água é obrigatório">
+								<f:selectItem itemLabel="Selecione" itemValue="" />
+								<f:selectItems value="#{insertSampleMB.waterBodyListAList}" var="item" itemValue="#{item.id}" itemLabel="#{item.waterBody}" />
+				      </p:selectOneMenu>
+				      
+				      <p:commandButton id="txs"  icon="fa fa-plus" 
+								oncomplete="PF('dlgWaterBody').show();"  style="vertical-align: 7px; margin-left: 10px;" />
+                	
+            </div>
+            
+            
+        </div>  
+        
+        <div class="row panel-body">
+                               
+            
+            <div  class="form-group col-md-5">
+                <p:outputLabel  value="Localidade: " />     
+                <p:inputTextarea rows="4" cols="60" value="#{insertSampleMB.event.locality}" />    
+            </div>	               
+                               
+            
+            <div  class="form-group col-md-5">
+                <p:outputLabel  value="Comentários da coleta: " />     
+                <p:inputTextarea rows="4" cols="60" value="#{insertSampleMB.event.eventRemarks}" />    
+            </div>	               
+            
+        </div>   
+        
+       
+         
+     <div class="row panel-body">
+                                  
+            
+            <div class="form-group col-md-1">                  
+                <p:commandButton value="Gravar" 
+	                actionListener="#{insertSampleMB.save()}" 
+	                oncomplete="PF('dlgConfirmar').show();"
+	                update=":frmConfirmar:pnlConfirmar"
+	                
+                >                
+                    
+                </p:commandButton>               
+            </div>
+            
+            
+           <div class="form-group col-md-1">     
+            
+            <p:commandButton value="Voltar" action="#{sampleMB.back()}" ajax="false" >                
+                     <f:param id="subProjectId" name="subprojectId" value="#{insertSampleMB.event.subproject.id}"/>
+     		</p:commandButton> 
+     	   </div> 	
+    </div> 
+            
+         
+         </h:form>
+         
+            
+           </p:panel>
+		     
+	<p:dialog header="Confirmar" widgetVar="dlgConfirmar" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmConfirmar">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				
+				<p>Deseja continuar inserindo  Eventos de Coleta?</p>
+				<h:panelGrid columns="2" id="pnlConfirmar">							
+							
+							<p:commandButton value="Sim" icon="fa fa-check"
+								actionListener="#{insertSampleMB.clean()}"
+								update="sample"
+								oncomplete="PF('dlgConfirmar').hide();" ajax="false"> 
+							</p:commandButton>
+							<p:commandButton value="Não" icon="fa fa-reply"
+								process="@this" oncomplete="PF('dlgOccurrence').show(); PF('dlgConfirmar').hide();">
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>
+
+
+	     
+	<p:dialog header="Confirmar" widgetVar="dlgOccurrence" modal="true"
+			appendTo="@(body)" closable="false" draggable="true"
+			resizable="false">
+			<h:form id="frmOccurrence">
+				<p:messages id="messages" autoUpdate="true" closable="false" />
+				<p>Deseja inserir Ocorrências para este Evento de Coleta?</p>
+				<h:panelGrid columns="2" id="pnlOccurrence">							
+							
+							<p:commandButton value="Sim" icon="fa fa-check"
+								actionListener="#{insertSampleMB.openOccurrence()}"
+								oncomplete="PF('dlgOccurrence').hide(); ">
+							</p:commandButton>
+							<p:commandButton value="Não" icon="fa fa-reply"
+								action="#{sampleMB.back()}"
+								process="@this" oncomplete="PF('dlgOccurrence').hide();" ajax="false">
+								
+								<f:param id="subProjectId" name="subprojectId" value="#{insertSampleMB.event.subproject.id}"/>
+							</p:commandButton>
+				
+				
+				</h:panelGrid>
+			</h:form>
+		</p:dialog>		 						
+		
+		
+		
+	  </div>	
+	  
+	  
+	  
+	  
+		
+	</ui:define>
+</ui:composition>
+
+
+</html>
+
+
+
+
+
+
+

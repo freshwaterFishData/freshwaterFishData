@@ -1,0 +1,188 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+<ui:composition template="../template.xhtml">
+
+	<ui:define name="content">
+	
+	
+     <div class="container">
+     
+		<h:form id="ocurrence" class="form-inline">
+		
+		<p:panel id="basic" header="Dados da água" >
+		
+        <p:messages id="messages" autoUpdate="true" closable="true" />  
+           
+        <div class="row panel-body">  
+                       
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Salinidade: " /></div>
+                <p:inputText value="#{insertWaterMB.water.salinity}" />   
+            </div> 
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Temperatura: " /></div>
+                <p:inputText value="#{insertWaterMB.water.temperature}" />   
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.temperatureUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="Graus" itemValue="Graus" />
+        		</p:selectOneMenu>  
+        	  
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Percentual de Oxigênio:" /></div>
+                <p:inputText value="#{insertWaterMB.water.dissolvedOxigenPercentual}" />   
+            </div>
+                        
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="ML oxigênio dissolvidos: " /></div>
+                <p:inputText value="#{insertWaterMB.water.dissolvedOxigenMl}" />   
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="PH: " /></div>
+                <p:inputText value="#{insertWaterMB.water.ph}" />   
+            </div>
+      </div>      
+            
+       <div class="row panel-body">       
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Carbono: " /></div>
+                <p:inputText value="#{insertWaterMB.water.dissolvedOrganicCaborn}" />   
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.dissolvedOrganicCabornUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="%" />
+        		</p:selectOneMenu>  
+        	  
+            </div>
+            
+            <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Nitrogênio: " /></div>
+                <p:inputText value="#{insertWaterMB.water.nitrogen}" />   
+            </div>
+            
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.nitrogenUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="%" />
+        		</p:selectOneMenu>  
+        	  
+            </div> 
+            
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Clorofila: " /></div>
+                <p:inputText value="#{insertWaterMB.water.clorophyll}" />   
+            </div>  
+            
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.clorophyllUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="%" />
+        		</p:selectOneMenu>          	  
+           </div> 
+           
+        </div> 
+           
+        <div class="row panel-body">         
+           
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Profundidade: " /></div>
+                <p:inputText value="#{insertWaterMB.water.depth}" />   
+           </div>  
+           
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.depthUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="%" />
+        		</p:selectOneMenu>          	  
+           </div> 
+           
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Profundidade Sechi: " /></div>
+                <p:inputText value="#{insertWaterMB.water.sechiDepth}" />   
+           </div> 
+           
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Unidade: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.sechiDepthUnit}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="%" itemValue="%" />
+        		</p:selectOneMenu>          	  
+           </div> 
+           
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Condutividade: " /></div>
+                <p:inputText value="#{insertWaterMB.water.conductivity}" />   
+           </div>
+           
+           <div  class="form-group col-md-2">
+                <div><p:outputLabel value="Dados da chuva: " /> </div>   
+                 
+                <p:selectOneMenu value="#{insertWaterMB.water.rain.id}" effect="fold" editable="false">
+            			<f:selectItem itemLabel="Selecione" itemValue="" />
+            			<f:selectItem itemLabel="16 mm" itemValue="1" />
+        		</p:selectOneMenu>          	  
+           </div> 
+             
+            
+          </div>  
+                                             
+            
+         <div class="row panel-body">   
+                <div class="form-group col-md-1">                    
+                    <p:commandButton value="Salvar" action="#{insertWaterMB.save()}" ajax="false" >               
+                			<f:param id="eventId" name="eventId" value="#{insertWaterMB.event.id}"/>
+                    </p:commandButton>
+                </div>
+                
+                 <div class="form-group col-md-1">     
+            
+                    <p:commandButton value="Voltar" action="#{waterMB.back()}" ajax="false" >                
+                         <f:param  name="id" value="#{insertWaterMB.event.id}"/>
+		     		</p:commandButton> 
+		     	  </div>
+                
+         </div>   
+         
+            
+            
+         </p:panel>
+		     
+		    						
+		</h:form>
+		
+		
+	  </div>	
+	  
+		
+	</ui:define>
+</ui:composition>
+</html>
+
+
+
